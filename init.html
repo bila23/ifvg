@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrategia IFVG · Manual Operativo de William · v3.2</title>
+<style>
+  :root{
+    --bg:#0E141B; --panel:#151D26; --panel2:#1A2430; --line:#26364A;
+    --text:#D9E1EA; --muted:#8CA0B4; --dim:#5F7387;
+    --green:#2EBD85; --green-dim:#1E5C46; --red:#F6465D; --red-dim:#6B2530;
+    --gold:#E8B54B; --blue:#5AA7E8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);
+    font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-size:16px;line-height:1.65;}
+  .mono{font-family:"SF Mono",SFMono-Regular,Consolas,"Roboto Mono",Menlo,monospace}
+  .wrap{max-width:960px;margin:0 auto;padding:0 28px 90px}
+
+  header{border-bottom:1px solid var(--line);padding:56px 0 28px;margin-bottom:8px}
+  .tickers{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+  .tick{font-family:"SF Mono",Consolas,Menlo,monospace;font-size:12px;letter-spacing:.08em;
+    border:1px solid var(--line);border-radius:4px;padding:5px 12px;color:var(--muted)}
+  .tick b{color:var(--green);font-weight:600}
+  h1{font-size:clamp(28px,5vw,44px);line-height:1.12;font-weight:700;letter-spacing:-.015em}
+  h1 span{color:var(--green)}
+  .sub{color:var(--muted);margin-top:14px;max-width:640px}
+  .vtag{display:inline-block;margin-top:18px;font-family:Consolas,Menlo,monospace;font-size:12px;
+    color:var(--gold);border:1px solid var(--gold);border-radius:4px;padding:4px 10px;letter-spacing:.06em}
+
+  /* ---------- pestañas ---------- */
+  .tabnav{position:sticky;top:0;background:var(--bg);z-index:20;display:flex;gap:6px;
+    overflow-x:auto;border-bottom:1px solid var(--line);padding:16px 0;margin-bottom:8px;
+    -ms-overflow-style:none;scrollbar-width:none}
+  .tabnav::-webkit-scrollbar{display:none}
+  .tabnav button{background:transparent;border:1px solid var(--line);color:var(--muted);
+    font-family:Consolas,Menlo,monospace;font-size:12.5px;letter-spacing:.03em;
+    padding:9px 15px;border-radius:7px;cursor:pointer;white-space:nowrap;transition:.15s ease}
+  .tabnav button:hover{border-color:var(--green);color:var(--text)}
+  .tabnav button.active{background:var(--green);color:#04140D;border-color:var(--green);font-weight:700}
+  .tabpanel{display:none}
+  .tabpanel.active{display:block}
+
+  section{margin-top:64px}
+  section:first-of-type{margin-top:36px}
+  .eyebrow{font-family:Consolas,Menlo,monospace;font-size:12px;letter-spacing:.14em;color:var(--green);
+    text-transform:uppercase;margin-bottom:8px}
+  h2{font-size:26px;font-weight:700;letter-spacing:-.01em;margin-bottom:16px}
+  h3{font-size:18px;font-weight:600;margin:26px 0 10px;color:var(--text)}
+  p{color:var(--muted);margin-bottom:14px;max-width:72ch}
+  p strong, li strong{color:var(--text);font-weight:600}
+  em{color:var(--text);font-style:italic}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:22px 24px;margin:18px 0}
+  .card.gold{border-color:var(--gold)}
+  .card.red{border-color:var(--red-dim)}
+  .card.green{border-color:var(--green-dim)}
+  .card h4{font-size:15px;font-weight:600;margin-bottom:8px}
+  .card h4.g{color:var(--gold)} .card h4.r{color:var(--red)} .card h4.v{color:var(--green)}
+  .card p:last-child{margin-bottom:0}
+
+  ul,ol{margin:0 0 14px 22px;color:var(--muted)}
+  li{margin-bottom:8px;max-width:70ch}
+  li::marker{color:var(--green)}
+
+  table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px}
+  th{font-family:Consolas,Menlo,monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--dim);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  td{padding:11px 12px;border-bottom:1px solid var(--line);color:var(--muted);vertical-align:top}
+  td:first-child{color:var(--text);font-weight:500}
+  .ok{color:var(--green);font-weight:600} .no{color:var(--red);font-weight:600} .mid{color:var(--gold);font-weight:600}
+
+  .fig{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin:20px 0}
+  .fig svg{display:block;width:100%;height:auto}
+  .figcap{font-family:Consolas,Menlo,monospace;font-size:12px;color:var(--dim);margin-top:12px;
+    padding-top:10px;border-top:1px dashed var(--line)}
+
+  .steps{counter-reset:st;list-style:none;margin-left:0}
+  .steps li{counter-increment:st;position:relative;padding-left:52px;margin-bottom:16px}
+  .steps li::before{content:counter(st,decimal-leading-zero);position:absolute;left:0;top:2px;
+    font-family:Consolas,Menlo,monospace;font-size:13px;color:var(--green);border:1px solid var(--green-dim);
+    border-radius:4px;padding:2px 7px}
+
+  .check{list-style:none;margin-left:0}
+  .check li{padding-left:34px;position:relative;border-bottom:1px dashed var(--line);padding-bottom:10px;margin-bottom:10px}
+  .check li::before{content:"";position:absolute;left:0;top:5px;width:15px;height:15px;
+    border:1.5px solid var(--green);border-radius:3px}
+
+  footer{margin-top:90px;border-top:1px solid var(--line);padding-top:26px}
+  footer p{font-size:12.5px;color:var(--dim)}
+
+  @media print{
+    body{background:#fff;color:#111}
+    :root{--bg:#fff;--panel:#fff;--panel2:#f6f6f6;--line:#bbb;--text:#111;--muted:#333;--dim:#666;
+      --green:#0c7a55;--green-dim:#9fd3bd;--red:#b3172c;--red-dim:#e3aab2;--gold:#8a6410;--blue:#1c5f9e}
+    .fig,.card{break-inside:avoid}
+    section{margin-top:34px}
+    .tabnav{display:none}
+    .tabpanel{display:block !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="tickers">
+    <span class="tick">EURUSD <b>▲</b></span>
+    <span class="tick">XAUUSD <b>▲</b></span>
+    <span class="tick">SP500 <b>▲</b></span>
+    <span class="tick mono">4H → 1H → 15M</span>
+  </div>
+  <h1>Estrategia IFVG<br><span>Manual operativo de William</span></h1>
+  <p class="sub">Metodología ICT + análisis técnico clásico. Zonas en 1H, confirmación en 15M,
+  contexto macro en 4H. Este documento contiene las reglas completas: qué operar, qué confirmar,
+  qué no confundir con confirmación, y cómo gestionar cada trade.</p>
+  <span class="vtag">v3.2 · actualizado 16 JUL 2026 · + Setup E (doble barrido + inversión IFVG) + Lección 06</span>
+</header>
+
+<nav class="tabnav">
+  <button class="active" onclick="showTab('tab-fundamentos', this)">01–04 · Fundamentos</button>
+  <button onclick="showTab('tab-confirmacion', this)">05–08 · Confirmación</button>
+  <button onclick="showTab('tab-errores', this)">09–12 · Errores comunes</button>
+  <button onclick="showTab('tab-gestion', this)">13–15 · Gestión</button>
+  <button onclick="showTab('tab-lecciones', this)">16 · Lecciones</button>
+  <button onclick="showTab('tab-checklist', this)">17 · Checklist</button>
+</nav>
+
+<!-- ===================================================== -->
+<!-- TAB 1 · FUNDAMENTOS                                    -->
+<!-- ===================================================== -->
+<div id="tab-fundamentos" class="tabpanel active">
+
+<!-- ============ 01. FILOSOFÍA ============ -->
+<section id="filosofia">
+  <div class="eyebrow">Sección 01</div>
+  <h2>Filosofía: liquidez como objetivo, no como barrera</h2>
+  <p>ICT no reemplaza el análisis técnico clásico — es un cambio de vocabulario con una adición clave.
+  Soportes y resistencias se convierten en zonas de liquidez y order blocks; la estructura de tendencia
+  se lee como BOS/CHoCH; el volumen se estudia con volume profile (POC, HVN, LVN). La diferencia
+  conceptual importante: <strong>la liquidez es un imán que atrae al precio</strong>, no una pared que lo detiene.
+  Los máximos iguales, los mínimos evidentes y los stops agrupados son los destinos hacia donde las
+  instituciones empujan el precio para ejecutar sus órdenes.</p>
+  <table>
+    <tr><th>Concepto clásico</th><th>Equivalente ICT</th><th>Uso en esta estrategia</th></tr>
+    <tr><td>Soporte / resistencia</td><td>Zonas de liquidez, order blocks</td><td>Confluencia sobre el FVG/IFVG, nunca gatillo solo</td></tr>
+    <tr><td>Tendencia (HH/HL)</td><td>BOS / CHoCH</td><td>Filtro direccional y confirmación estructural</td></tr>
+    <tr><td>Volumen</td><td>Volume profile (POC/HVN/LVN)</td><td>Filtrar objetivos y validar participación</td></tr>
+    <tr><td>Ruptura de nivel</td><td>Sweep vs. desplazamiento</td><td>Distinguir caza de stops de intención real</td></tr>
+  </table>
+  <div class="card gold">
+    <h4 class="g">Principio rector</h4>
+    <p>Cada entrada debe demostrar <strong>intención institucional real en la zona</strong>, no un rebote casual.
+    Toda la lista de confirmaciones existe para responder una sola pregunta: ¿alguien con tamaño defendió este nivel?</p>
+  </div>
+</section>
+
+<!-- ============ 02. BOS Y CHOCH ============ -->
+<section id="bos-choch">
+  <div class="eyebrow">Sección 02</div>
+  <h2>BOS y CHoCH: la gramática de la estructura</h2>
+  <p><strong>BOS (Break of Structure)</strong> confirma que la tendencia vigente continúa: el precio genera
+  un nuevo máximo con cierre de cuerpo más allá del máximo anterior (en alcista), o un nuevo mínimo más
+  allá del anterior (en bajista). <strong>CHoCH (Change of Character)</strong> es la primera ruptura en sentido
+  <em>contrario</em> a la tendencia vigente: en un alcista, ocurre cuando el precio rompe con cuerpo el último
+  mínimo protegido (higher low) — la primera señal de que el carácter del movimiento podría estar cambiando.</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img">
+      <text x="170" y="30" font-size="14" font-weight="600" fill="#2EBD85" text-anchor="middle" font-family="sans-serif">BOS — continuación</text>
+      <path d="M60 210 L110 110 L160 150 L210 60" fill="none" stroke="#D9E1EA" stroke-width="1.6"/>
+      <circle cx="60" cy="210" r="3.5" fill="#8CA0B4"/>
+      <circle cx="110" cy="110" r="3.5" fill="#2EBD85"/>
+      <circle cx="160" cy="150" r="3.5" fill="#2EBD85"/>
+      <circle cx="210" cy="60" r="3.5" fill="#2EBD85"/>
+      <line x1="60" y1="110" x2="300" y2="110" stroke="#8CA0B4" stroke-width="0.8" stroke-dasharray="4 4"/>
+      <text x="118" y="100" font-size="12" fill="#8CA0B4" font-family="sans-serif">H1</text>
+      <text x="168" y="168" font-size="12" fill="#8CA0B4" font-family="sans-serif">HL</text>
+      <text x="215" y="50" font-size="12" fill="#2EBD85" font-weight="600" font-family="sans-serif">H2 · rompe H1</text>
+      <text x="170" y="240" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Nuevo máximo con cuerpo: la tendencia continúa</text>
+
+      <line x1="340" y1="20" x2="340" y2="250" stroke="#26364A" stroke-dasharray="2 4"/>
+
+      <text x="510" y="30" font-size="14" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">CHoCH — cambio de carácter</text>
+      <path d="M400 210 L450 110 L500 150 L550 70 L590 190" fill="none" stroke="#D9E1EA" stroke-width="1.6"/>
+      <circle cx="400" cy="210" r="3.5" fill="#8CA0B4"/>
+      <circle cx="450" cy="110" r="3.5" fill="#2EBD85"/>
+      <circle cx="500" cy="150" r="3.5" fill="#2EBD85"/>
+      <circle cx="550" cy="70" r="3.5" fill="#2EBD85"/>
+      <circle cx="590" cy="190" r="3.5" fill="#F6465D"/>
+      <line x1="400" y1="150" x2="630" y2="150" stroke="#F6465D" stroke-width="0.8" stroke-dasharray="4 4"/>
+      <text x="458" y="100" font-size="12" fill="#8CA0B4" font-family="sans-serif">H1</text>
+      <text x="508" y="168" font-size="12" fill="#8CA0B4" font-family="sans-serif">HL protegido</text>
+      <text x="555" y="60" font-size="12" fill="#8CA0B4" font-family="sans-serif">H2</text>
+      <text x="596" y="205" font-size="12" fill="#F6465D" font-weight="600" font-family="sans-serif">Rompe HL</text>
+      <text x="510" y="240" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Rompe el mínimo protegido: cambia el carácter</text>
+    </svg>
+    <div class="figcap">FIG 00a — Definiciones clásicas. BOS supera el último máximo (o mínimo) a favor de la tendencia; CHoCH rompe el punto que protegía la tendencia vigente.</div>
+  </div>
+
+  <h3>Por qué en este manual "CHoCH" significa el quiebre del retroceso</h3>
+  <p>Un mismo evento puede llamarse BOS o CHoCH según la escala en la que se mida. El retroceso hacia
+  tu zona FVG es, en sí mismo, una <strong>tendencia menor en sentido contrario</strong> — una minitendencia
+  bajista dentro de una tendencia mayor alcista. Cuando el precio rompe con cuerpo el máximo de esa
+  minitendencia bajista, eso es un <strong>CHoCH del movimiento interno</strong>: el retroceso cambia de carácter
+  y vuelve a subir. Y como esa reversión interna coincide con el sesgo mayor de 1H/4H, ese mismo evento
+  funciona simultáneamente como <strong>BOS del marco superior</strong>: confirma que la tendencia grande sigue viva.</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img">
+      <path d="M40 200 L160 60 L200 90 L230 130 L260 100 L285 118 L340 50" fill="none" stroke="#D9E1EA" stroke-width="1.6"/>
+      <circle cx="40" cy="200" r="3.5" fill="#8CA0B4"/>
+      <circle cx="160" cy="60" r="4" fill="#2EBD85"/>
+      <circle cx="230" cy="130" r="3.5" fill="#F6465D"/>
+      <circle cx="260" cy="100" r="3.5" fill="#E8B54B"/>
+      <circle cx="340" cy="50" r="4" fill="#2EBD85"/>
+
+      <rect x="205" y="122" width="60" height="26" rx="4" fill="#8CA0B4" opacity="0.16"/>
+      <text x="235" y="138" font-size="10.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">FVG</text>
+
+      <line x1="40" y1="60" x2="400" y2="60" stroke="#2EBD85" stroke-width="0.8" stroke-dasharray="5 4"/>
+      <text x="406" y="64" font-size="11.5" fill="#2EBD85" text-anchor="start" font-family="sans-serif">X · origen del retroceso</text>
+
+      <line x1="200" y1="100" x2="400" y2="100" stroke="#E8B54B" stroke-width="0.8" stroke-dasharray="4 4"/>
+      <text x="406" y="104" font-size="11.5" fill="#E8B54B" text-anchor="start" font-family="sans-serif">Nivel del CHoCH interno</text>
+
+      <text x="150" y="30" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Tendencia mayor (1H/4H)</text>
+      <text x="230" y="168" font-size="11.5" fill="#F6465D" text-anchor="middle" font-family="sans-serif">Minitendencia interna</text>
+      <text x="230" y="184" font-size="11.5" fill="#F6465D" text-anchor="middle" font-family="sans-serif">(el retroceso)</text>
+
+      <text x="345" y="45" font-size="12" fill="#2EBD85" font-weight="600" text-anchor="start" font-family="sans-serif">Rompe ambos niveles</text>
+      <text x="345" y="220" font-size="11.5" fill="#8CA0B4" text-anchor="start" font-family="sans-serif">CHoCH interno confirma que el</text>
+      <text x="345" y="236" font-size="11.5" fill="#8CA0B4" text-anchor="start" font-family="sans-serif">retroceso terminó; al superar X,</text>
+      <text x="345" y="252" font-size="11.5" fill="#8CA0B4" text-anchor="start" font-family="sans-serif">también es BOS del marco mayor.</text>
+    </svg>
+    <div class="figcap">FIG 00b — Estructura anidada: el CHoCH que usamos como gatillo (nivel dorado) es interno al retroceso. Cuando el precio además supera X, el mismo movimiento es BOS de la tendencia mayor.</div>
+  </div>
+
+  <table>
+    <tr><th>Término</th><th>Qué mide</th><th>Rol en tu sistema</th></tr>
+    <tr><td>BOS</td><td>Continuación de la tendencia vigente (nuevo HH o LL)</td><td>Confirma el sesgo en 4H/1H (Sección 05)</td></tr>
+    <tr><td>CHoCH</td><td>Primer quiebre de carácter contra la tendencia vigente</td><td>Nuestro gatillo de entrada en 15M: la ruptura de la minitendencia del retroceso (Secciones 06–08)</td></tr>
+  </table>
+  <div class="card gold">
+    <h4 class="g">No confundir las dos escalas</h4>
+    <p>El BOS/CHoCH de 4H o 1H define el <strong>sesgo direccional</strong> (Sección 05, filtro rango vs. tendencia).
+    El "CHoCH" que buscamos en 15M para entrar es siempre el de la <strong>minitendencia del retroceso</strong> —
+    más pequeño, más rápido, y el que da entrada con buen R:R. No esperes que el precio rompa la
+    tendencia mayor para entrar: eso sería perseguir el origen del retroceso (ver Sección 08).</p>
+  </div>
+</section>
+
+<!-- ============ 03. FVG → IFVG ============ -->
+<section id="ifvg">
+  <div class="eyebrow">Sección 03</div>
+  <h2>FVG → IFVG: el flip de polaridad</h2>
+  <p>Un FVG alcista que el precio invalida con <strong>cierre de cuerpo</strong> se convierte en IFVG bajista:
+  la zona cambia de polaridad y pasa a actuar como resistencia. Lo mismo al revés: un FVG bajista
+  invalidado se convierte en IFVG alcista y actúa como soporte. La mecánica en tres fases:</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" role="img">
+      <text x="112" y="26" font-size="13" font-weight="600" fill="#D9E1EA" text-anchor="middle" font-family="sans-serif">1 · FVG bajista</text>
+      <rect x="30" y="90" width="165" height="34" rx="4" fill="#F6465D" opacity="0.18" stroke="#6B2530"/>
+      <line x1="70" y1="40" x2="70" y2="100" stroke="#F6465D"/><rect x="64" y="46" width="12" height="48" fill="#F6465D"/>
+      <line x1="95" y1="86" x2="95" y2="150" stroke="#F6465D"/><rect x="89" y="94" width="12" height="48" fill="#F6465D"/>
+      <line x1="120" y1="128" x2="120" y2="190" stroke="#F6465D"/><rect x="114" y="136" width="12" height="46" fill="#F6465D"/>
+      <text x="112" y="214" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Gap entre vela 1 y vela 3</text>
+
+      <text x="340" y="26" font-size="13" font-weight="600" fill="#D9E1EA" text-anchor="middle" font-family="sans-serif">2 · Invalidación con cuerpo</text>
+      <rect x="258" y="90" width="165" height="34" rx="4" fill="#F6465D" opacity="0.18" stroke="#6B2530"/>
+      <line x1="300" y1="150" x2="300" y2="196" stroke="#F6465D"/><rect x="294" y="156" width="12" height="34" fill="#F6465D"/>
+      <line x1="330" y1="60" x2="330" y2="188" stroke="#2EBD85"/><rect x="324" y="68" width="12" height="112" fill="#2EBD85"/>
+      <text x="340" y="214" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Cuerpo cierra a través de la zona</text>
+
+      <text x="568" y="26" font-size="13" font-weight="600" fill="#D9E1EA" text-anchor="middle" font-family="sans-serif">3 · IFVG alcista: soporte</text>
+      <rect x="486" y="90" width="165" height="34" rx="4" fill="#2EBD85" opacity="0.18" stroke="#1E5C46"/>
+      <line x1="486" y1="107" x2="651" y2="107" stroke="#8CA0B4" stroke-width="0.8" stroke-dasharray="4 4"/>
+      <text x="646" y="102" font-size="10.5" fill="#8CA0B4" text-anchor="end" font-family="sans-serif">CE 50%</text>
+      <line x1="530" y1="52" x2="530" y2="100" stroke="#F6465D"/><rect x="524" y="58" width="12" height="36" fill="#F6465D"/>
+      <line x1="556" y1="84" x2="556" y2="122" stroke="#2EBD85"/><rect x="550" y="88" width="12" height="24" fill="#2EBD85"/>
+      <path d="M566 86 L600 52" fill="none" stroke="#2EBD85" stroke-width="1.6"/>
+      <path d="M593 52 L601 51 L598 60" fill="none" stroke="#2EBD85" stroke-width="1.6"/>
+      <text x="568" y="214" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Retest desde arriba y rechazo</text>
+    </svg>
+    <div class="figcap">FIG 01 — Flip de polaridad. La invalidación exige cierre de cuerpo; una mecha a través de la zona es sweep, no invalidación.</div>
+  </div>
+  <h3>Reglas de zona</h3>
+  <ul>
+    <li><strong>CE (Consequent Encroachment, 50%):</strong> en zonas grandes, la reacción se busca en el CE o en el borde cercano al precio, no en cualquier punto de la zona. El SL se ancla al swing de la confirmación, nunca al borde completo de la zona.</li>
+    <li><strong>FVGs apilados:</strong> la zona operativa es la más cercana al precio. Varios FVG superpuestos señalan entorno errático: exige confirmación más estricta o quédate fuera.</li>
+    <li><strong>Retest superficial que respeta el CE sin barrer los mínimos</strong> = señal de demanda fuerte, pero no sustituye por sí solo el checklist de confirmación (caso EURUSD 08-JUL).</li>
+  </ul>
+  <h3>El papel de cada vela del FVG</h3>
+  <p>El gap queda delimitado entre la mecha de la vela 1 y la mecha de la vela 3, pero quien realmente
+  <strong>crea</strong> el FVG es la <strong>vela 2</strong>: el desplazamiento que se mueve tan rápido que deja precio sin
+  negociar. Su fuerza es lo que valida la zona. La <strong>vela 3</strong>, en cambio, no define la calidad del
+  gap — es un <em>termómetro de continuidad</em>:</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg" role="img">
+      <text x="170" y="34" font-size="14" font-weight="600" fill="#2EBD85" text-anchor="middle" font-family="sans-serif">Vela 3 fuerte (fiable)</text>
+      <rect x="60" y="150" width="220" height="40" rx="4" fill="#2EBD85" opacity="0.14" stroke="#1E5C46"/>
+      <text x="268" y="145" font-size="11" fill="#8CA0B4" text-anchor="end" font-family="sans-serif">GAP</text>
+      <line x1="105" y1="120" x2="105" y2="205" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="98" y="150" width="14" height="45" fill="#2EBD85"/>
+      <text x="105" y="225" font-size="11" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">1</text>
+      <line x1="150" y1="95" x2="150" y2="240" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="143" y="105" width="14" height="120" fill="#2EBD85"/>
+      <text x="150" y="258" font-size="11" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">2</text>
+      <line x1="200" y1="60" x2="200" y2="150" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="193" y="68" width="14" height="78" fill="#2EBD85"/>
+      <text x="200" y="225" font-size="11" fill="#2EBD85" font-weight="700" text-anchor="middle" font-family="sans-serif">3</text>
+      <text x="170" y="290" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Cuerpo dominante, cierra fuerte:</text>
+      <text x="170" y="308" font-size="12" fill="#2EBD85" font-weight="600" text-anchor="middle" font-family="sans-serif">el impulso sigue vivo</text>
+      <line x1="340" y1="24" x2="340" y2="300" stroke="#26364A" stroke-dasharray="2 4"/>
+      <text x="510" y="34" font-size="14" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">Vela 3 débil (sospechosa)</text>
+      <rect x="400" y="150" width="220" height="40" rx="4" fill="#8CA0B4" opacity="0.14" stroke="#26364A"/>
+      <text x="608" y="145" font-size="11" fill="#8CA0B4" text-anchor="end" font-family="sans-serif">GAP</text>
+      <line x1="445" y1="120" x2="445" y2="205" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="438" y="150" width="14" height="45" fill="#2EBD85"/>
+      <text x="445" y="225" font-size="11" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">1</text>
+      <line x1="490" y1="95" x2="490" y2="240" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="483" y="105" width="14" height="120" fill="#2EBD85"/>
+      <text x="490" y="258" font-size="11" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">2</text>
+      <line x1="540" y1="62" x2="540" y2="160" stroke="#F6465D" stroke-width="1.3"/>
+      <rect x="533" y="128" width="14" height="22" fill="#F6465D"/>
+      <text x="540" y="225" font-size="11" fill="#F6465D" font-weight="700" text-anchor="middle" font-family="sans-serif">3</text>
+      <text x="510" y="290" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Mecha larga, cuerpo chico:</text>
+      <text x="510" y="308" font-size="12" fill="#F6465D" font-weight="600" text-anchor="middle" font-family="sans-serif">posible agotamiento del impulso</text>
+    </svg>
+    <div class="figcap">FIG 01b — La vela 2 crea el FVG; la vela 3 indica si el impulso tiene continuidad o ya se agota.</div>
+  </div>
+  <p>Regla práctica: no descartes un FVG solo porque la vela 3 sea débil, pero sube o baja tu nivel de
+  confianza en la zona según cómo cerró. Vela 2 de desplazamiento potente + vela 3 de cuerpo fuerte es
+  la combinación de mayor calidad para marcar en 1H.</p>
+</section>
+
+<!-- ============ 04. ZONAS 1H ============ -->
+<section id="zonas">
+  <div class="eyebrow">Sección 04</div>
+  <h2>Zonas de interés en 1H</h2>
+  <p>La zona se identifica en 1H y gana calidad con cada capa de confluencia. Ninguna capa es gatillo por sí sola.</p>
+  <table>
+    <tr><th>Capa</th><th>Qué aporta</th><th>Peso</th></tr>
+    <tr><td>IFVG / FVG en 1H</td><td>La zona base de la estrategia</td><td class="ok">Núcleo</td></tr>
+    <tr><td>S/R clásico coincidente</td><td>Nivel visible para todo el mercado</td><td class="ok">Alto</td></tr>
+    <tr><td>Fibonacci 50–61.8% del impulso</td><td>Descuento/premium del tramo</td><td class="mid">Medio</td></tr>
+    <tr><td>POC / HVN / LVN</td><td>Dónde hubo negocio real y dónde no</td><td class="mid">Medio</td></tr>
+    <tr><td>Liquidez adyacente (máx/mín iguales)</td><td>Combustible del movimiento esperado</td><td class="ok">Alto</td></tr>
+    <tr><td>Order block coincidente</td><td>Solo como confluencia</td><td class="no">Bajo solo</td></tr>
+  </table>
+  <div class="card red">
+    <h4 class="r">Filtro obligatorio: ¿rango o tendencia?</h4>
+    <p>Antes de operar cualquier zona, define el entorno en 4H. <strong>En rango, las señales de continuación
+    de FVG fallan en ambas direcciones</strong> y una vela grande del piso al techo del rango es rotación interna,
+    no ruptura. Sin sesgo claro en 4H, no hay trade de continuación.</p>
+  </div>
+</section>
+
+</div>
+<!-- fin tab-fundamentos -->
+
+<!-- ===================================================== -->
+<!-- TAB 2 · CONFIRMACIÓN                                   -->
+<!-- ===================================================== -->
+<div id="tab-confirmacion" class="tabpanel">
+
+<div class="card gold" style="text-align:center;margin-top:8px">
+  <p style="color:var(--text);font-size:19px;font-weight:600;margin-bottom:6px;max-width:none">
+    Retest → Confirmación → Seguimiento → <span style="color:var(--gold)">entra al mercado</span>
+  </p>
+  <p style="font-size:13px;margin-bottom:0;max-width:none">El mantra de todo el sistema, en tres pasos. Sin el primero no hay nada que evaluar (Sección 05);
+  sin el segundo no hay ventaja real (Sección 06); sin el tercero, el CHoCH puede ser una ruptura que se estanca en vez de un impulso genuino.</p>
+</div>
+
+<!-- ============ 05. FLUJO ============ -->
+<section id="flujo">
+  <div class="eyebrow">Sección 05</div>
+  <h2>Flujo operativo: 4H → 1H → 15M</h2>
+  <ol class="steps">
+    <li><strong>4H — sesgo macro.</strong> Define tendencia o rango, marca la liquidez mayor (máximos/mínimos de sesión y semana) y el sesgo direccional. Sin sesgo, sin trade de continuación.</li>
+    <li><strong>1H — zona.</strong> Identifica el FVG/IFVG operativo alineado con el sesgo y súmale capas de confluencia (Sección 04). Marca el CE.</li>
+    <li><strong>15M — espera la llegada.</strong> El precio debe llegar a la zona. No anticipes: sin retest no hay setup. Si el precio se va sin darte entrada, no perseguir — <em>no operar es una decisión correcta, no una oportunidad perdida</em>.</li>
+    <li><strong>15M — confirma.</strong> Aplica el núcleo obligatorio + evidencia (Secciones 06–07).</li>
+    <li><strong>Entrada y riesgo.</strong> Entra en el CHoCH o su micro-pullback. SL detrás del swing de confirmación. Verifica R:R mínimo hacia la primera liquidez.</li>
+    <li><strong>Gestión.</strong> TP1 en la liquidez cercana (parcial + SL a breakeven), TP2 en la siguiente liquidez filtrada con volume profile.</li>
+  </ol>
+</section>
+
+<!-- ============ 06. NÚCLEO Y EVIDENCIA ============ -->
+<section id="nucleo">
+  <div class="eyebrow">Sección 06</div>
+  <h2>Confirmación en 15M: núcleo obligatorio + evidencia intercambiable</h2>
+  <p>El mercado casi nunca entrega la secuencia de libro completa. Por eso el checklist se estructura en
+  dos niveles: <strong>dos elementos que deben estar siempre</strong>, y tres evidencias de las que basta
+  <strong>al menos una</strong>. Lo que se está demostrando es una sola cosa: intención institucional real en la zona.</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img">
+      <text x="46" y="34" font-size="14" font-weight="600" fill="#E8B54B" font-family="sans-serif">NÚCLEO OBLIGATORIO — los dos, siempre</text>
+      <rect x="36" y="46" width="608" height="96" rx="10" fill="none" stroke="#26364A" stroke-dasharray="5 4"/>
+      <rect x="56" y="64" width="278" height="60" rx="8" fill="#E8B54B" opacity="0.10"/>
+      <rect x="56" y="64" width="278" height="60" rx="8" fill="none" stroke="#E8B54B"/>
+      <text x="195" y="90" font-size="14" font-weight="600" fill="#D9E1EA" text-anchor="middle" font-family="sans-serif">Rechazo con cuerpo dominante</text>
+      <text x="195" y="110" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Cuerpo ≥ 60–70% del rango total</text>
+      <rect x="348" y="64" width="278" height="60" rx="8" fill="#E8B54B" opacity="0.10"/>
+      <rect x="348" y="64" width="278" height="60" rx="8" fill="none" stroke="#E8B54B"/>
+      <text x="487" y="90" font-size="14" font-weight="600" fill="#D9E1EA" text-anchor="middle" font-family="sans-serif">Ruptura estructural</text>
+      <text x="487" y="110" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">CHoCH o BOS con cierre de cuerpo</text>
+
+      <text x="46" y="182" font-size="14" font-weight="600" fill="#2EBD85" font-family="sans-serif">EVIDENCIA INTERCAMBIABLE — mínimo una</text>
+      <rect x="36" y="194" width="608" height="96" rx="10" fill="none" stroke="#26364A" stroke-dasharray="5 4"/>
+      <rect x="56" y="212" width="184" height="60" rx="8" fill="#2EBD85" opacity="0.10"/>
+      <rect x="56" y="212" width="184" height="60" rx="8" fill="none" stroke="#1E5C46"/>
+      <text x="148" y="238" font-size="13.5" font-weight="600" fill="#D9E1EA" text-anchor="middle" font-family="sans-serif">Sweep de liquidez</text>
+      <text x="148" y="258" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Con mecha, no cuerpo</text>
+      <rect x="258" y="212" width="184" height="60" rx="8" fill="#2EBD85" opacity="0.10"/>
+      <rect x="258" y="212" width="184" height="60" rx="8" fill="none" stroke="#1E5C46"/>
+      <text x="350" y="238" font-size="13.5" font-weight="600" fill="#D9E1EA" text-anchor="middle" font-family="sans-serif">Volumen alto</text>
+      <text x="350" y="258" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Sobre el promedio reciente</text>
+      <rect x="460" y="212" width="184" height="60" rx="8" fill="#2EBD85" opacity="0.10"/>
+      <rect x="460" y="212" width="184" height="60" rx="8" fill="none" stroke="#1E5C46"/>
+      <text x="552" y="238" font-size="13.5" font-weight="600" fill="#D9E1EA" text-anchor="middle" font-family="sans-serif">Nuevo FVG</text>
+      <text x="552" y="258" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">El impulso deja un gap</text>
+    </svg>
+    <div class="figcap">FIG 02 — Estructura de confirmación. Sin los dos elementos del núcleo, no hay entrada bajo ninguna combinación.</div>
+  </div>
+  <h3>Jerarquía de fiabilidad</h3>
+  <ul>
+    <li><strong>CHoCH</strong> es el elemento más fiable: es estructural y objetivo cuando está bien definido.</li>
+    <li><strong>Desplazamiento que crea nuevo FVG</strong> es evidencia fuerte de participación institucional — el gap solo aparece cuando hay agresión real de órdenes.</li>
+    <li><strong>Volumen</strong> es un filtro secundario en EURUSD y XAUUSD: es tick volume de broker (OTC/CFD), no volumen real de bolsa. Útil como confluencia, débil solo. En SP500 tiene más peso.</li>
+    <li><strong>Order blocks</strong> son lo más débil en aislamiento por su subjetividad: solo confluencia, nunca gatillo.</li>
+  </ul>
+</section>
+
+<!-- ============ 07. COMBINACIONES ============ -->
+<section id="combinaciones">
+  <div class="eyebrow">Sección 07</div>
+  <h2>Las cinco combinaciones válidas de entrada</h2>
+  <p>Estas son las variantes que cumplen la estructura núcleo + evidencia. Cada una tiene su regla de
+  compensación. <strong>Cualquier entrada que no encaje en una de estas cinco, no se toma.</strong></p>
+
+  <div class="card green">
+    <h4 class="v">Setup A — Secuencia de libro (calidad máxima)</h4>
+    <p>Sweep de mínimos con mecha → vela de rechazo con cuerpo dominante cerrando sobre el CE →
+    volumen sobre el promedio en esa vela → CHoCH del máximo menor. Los cuatro elementos, en ese orden.
+    Es la única variante que justifica tamaño completo de posición.</p>
+  </div>
+
+  <div class="card green">
+    <h4 class="v">Setup B — Desplazamiento sin sweep</h4>
+    <p>El retest es superficial (respeta el CE, no barre los mínimos) pero la salida es un desplazamiento
+    violento que <strong>crea un nuevo FVG</strong> y rompe estructura con cuerpo. La demanda fue tan fuerte que no
+    dejó barrer. <strong>Compensación:</strong> exige que el desplazamiento sea inequívoco (vela claramente mayor que
+    las recientes) y que el R:R hacia la primera liquidez siga siendo ≥ 1:1.5. La entrada preferida es el
+    retest del nuevo FVG creado, no perseguir la vela.</p>
+  </div>
+
+  <div class="card green">
+    <h4 class="v">Setup C — Sweep en temporalidad menor</h4>
+    <p>El 15M muestra solo un toque a la zona, pero al bajar a 5M/1M se ve el sweep de un swing low
+    interno + CHoCH en esa temporalidad. Válido con <strong>SL más ajustado</strong> (detrás de la mecha del sweep
+    en la TF menor) y tamaño reducido: la evidencia es real pero de menor grado.</p>
+  </div>
+
+  <div class="card green">
+    <h4 class="v">Setup D — Ruptura + retest de nivel</h4>
+    <p>Cuando el precio rompe una liquidez horizontal (máximos iguales, techo de rango) <strong>con cierre de
+    cuerpo</strong>, el trade no es la ruptura: es el <strong>retest del nivel roto desde el otro lado</strong>. En ese retest
+    se aplica el mismo núcleo: rechazo con cuerpo + micro-CHoCH, con al menos una evidencia. Es la
+    respuesta correcta al escenario "el precio se me fue".</p>
+  </div>
+
+  <div class="card green">
+    <h4 class="v">Setup E — Doble barrido de liquidez + inversión IFVG</h4>
+    <p>El retest de un FVG no se detiene ahí: el precio barre con <strong>mecha</strong> un mínimo/máximo menor previo
+    (liquidez residual que quedó bajo/sobre la zona) y luego cierra con <strong>cuerpo</strong> al otro lado de la zona
+    original, invirtiéndola en IFVG. La entrada <strong>no es el primer retest</strong> — es el retest del IFVG ya
+    invertido, con CHoCH interno confirmado. Es la variante más engañosa: la mayoría opera continuación
+    en el paso 3 (retest) y queda atrapada cuando el segundo barrido revierte todo.</p>
+    <div class="fig" style="margin-top:16px">
+      <svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" role="img">
+        <rect x="40" y="150" width="600" height="30" rx="4" fill="#8CA0B4" opacity="0.14"/>
+        <text x="46" y="144" font-size="12" fill="#F6465D" font-weight="600" font-family="sans-serif">FVG S (1H)</text>
+        <line x1="90" y1="270" x2="460" y2="270" stroke="#E8B54B" stroke-width="1" stroke-dasharray="5 4"/>
+        <text x="96" y="288" font-size="11.5" fill="#E8B54B" font-family="sans-serif">① liquidez residual (mínimo menor)</text>
+
+        <line x1="80" y1="70" x2="80" y2="140" stroke="#F6465D" stroke-width="1.3"/><rect x="73" y="78" width="14" height="55" fill="#F6465D"/>
+        <line x1="105" y1="110" x2="105" y2="205" stroke="#F6465D" stroke-width="1.3"/><rect x="98" y="118" width="14" height="72" fill="#F6465D"/>
+        <line x1="130" y1="185" x2="130" y2="266" stroke="#F6465D" stroke-width="1.3"/><rect x="123" y="193" width="14" height="60" fill="#F6465D"/>
+
+        <line x1="160" y1="245" x2="160" y2="310" stroke="#2EBD85" stroke-width="1.3"/><rect x="153" y="252" width="14" height="45" fill="#2EBD85"/>
+        <line x1="185" y1="200" x2="185" y2="260" stroke="#2EBD85" stroke-width="1.3"/><rect x="178" y="207" width="14" height="42" fill="#2EBD85"/>
+        <text x="185" y="185" font-size="11.5" fill="#5AA7E8" font-family="sans-serif">② retest FVG</text>
+        <text x="185" y="200" font-size="10.5" fill="#8CA0B4" font-family="sans-serif">(trampa: aquí entran en corto)</text>
+
+        <line x1="215" y1="175" x2="215" y2="250" stroke="#F6465D" stroke-width="1.3"/><rect x="208" y="183" width="14" height="58" fill="#F6465D"/>
+        <line x1="240" y1="225" x2="240" y2="300" stroke="#F6465D" stroke-width="1.3"/><rect x="233" y="232" width="14" height="52" fill="#F6465D"/>
+        <line x1="265" y1="255" x2="265" y2="345" stroke="#2EBD85" stroke-width="1.5"/><rect x="258" y="262" width="14" height="34" fill="#2EBD85"/>
+        <circle cx="265" cy="338" r="13" fill="none" stroke="#E8B54B" stroke-width="1.8"/>
+        <text x="230" y="368" font-size="12" fill="#E8B54B" font-weight="600" font-family="sans-serif">③ SWEEP (mecha, no cuerpo)</text>
+
+        <line x1="295" y1="180" x2="295" y2="288" stroke="#2EBD85" stroke-width="1.3"/><rect x="288" y="188" width="14" height="90" fill="#2EBD85"/>
+        <line x1="320" y1="90" x2="320" y2="205" stroke="#2EBD85" stroke-width="1.3"/><rect x="313" y="98" width="14" height="90" fill="#2EBD85"/>
+        <text x="300" y="76" font-size="12" fill="#2EBD85" font-weight="600" font-family="sans-serif">④ cierre de cuerpo ARRIBA</text>
+        <text x="300" y="92" font-size="10.5" fill="#8CA0B4" font-family="sans-serif">FVG S invertido → IFVG (soporte)</text>
+
+        <rect x="345" y="150" width="290" height="30" rx="4" fill="#2EBD85" opacity="0.16"/>
+        <text x="350" y="144" font-size="12" fill="#2EBD85" font-weight="600" font-family="sans-serif">IFVG</text>
+
+        <line x1="365" y1="120" x2="365" y2="178" stroke="#F6465D" stroke-width="1.3"/><rect x="358" y="128" width="14" height="42" fill="#F6465D"/>
+        <line x1="390" y1="140" x2="390" y2="195" stroke="#2EBD85" stroke-width="1.3"/><rect x="383" y="147" width="14" height="28" fill="#2EBD85"/>
+        <circle cx="390" cy="162" r="15" fill="none" stroke="#5AA7E8" stroke-width="1.8"/>
+        <text x="410" y="196" font-size="12" fill="#5AA7E8" font-weight="600" font-family="sans-serif">⑤ ENTRADA 15M</text>
+        <text x="410" y="211" font-size="10.5" fill="#8CA0B4" font-family="sans-serif">retest IFVG/CE + CHoCH interno</text>
+
+        <line x1="440" y1="70" x2="440" y2="155" stroke="#2EBD85" stroke-width="1.3"/><rect x="433" y="78" width="14" height="70" fill="#2EBD85"/>
+        <line x1="465" y1="35" x2="465" y2="100" stroke="#2EBD85" stroke-width="1.3"/><rect x="458" y="42" width="14" height="52" fill="#2EBD85"/>
+        <text x="500" y="55" font-size="12" fill="#2EBD85" font-weight="600" font-family="sans-serif">⑥ impulso a liquidez (TP 1H)</text>
+      </svg>
+      <div class="figcap">FIG 13 — Setup E completo (versión bajista→alcista; espejo idéntico invertido para el caso alcista→bajista). El error clásico es entrar en ②. La operación de alta probabilidad nace en ③ y se confirma en ④.</div>
+    </div>
+    <h4 class="v" style="margin-top:18px">Filtro de contexto: ¿continuación o inversión? (evaluar antes del retest)</h4>
+    <table>
+      <tr><th>Bandera roja</th><th>Qué mirar</th><th>Lectura</th></tr>
+      <tr><td>Ubicación del FVG</td><td>¿Está al final de un movimiento ya extendido (3+ impulsos) o contra la estructura 4H?</td><td class="no">Sospecha de inversión</td></tr>
+      <tr><td>Liquidez residual</td><td>¿Hay un mínimo/máximo igual u obvio justo debajo/encima del FVG?</td><td class="no">El precio irá a barrerlo primero</td></tr>
+      <tr><td>Cómo llega al retest</td><td>¿Velas lentas y pequeñas, o impulso con cuerpos dominantes hacia la zona?</td><td class="mid">Impulso fuerte = probable ruptura</td></tr>
+    </table>
+    <p style="margin-top:10px">0 banderas → Escenario A probable, opera el retest normal. 1 bandera → exige el checklist completo sin concesiones. <strong>2–3 banderas → prohibido operar la continuación</strong>: prepara el Setup E y espera el sweep + cierre de cuerpo de inversión.</p>
+  </div>
+
+  <div class="card gold">
+    <h4 class="g">El quinto filtro: R:R operable</h4>
+    <p>Una confirmación puede ser técnicamente válida y aun así <strong>no operable</strong>. Si el rechazo ocurre en
+    la parte alta de la zona, pegado a la primera liquidez, el ratio no justifica la entrada (ej.: 3 pips de
+    recorrido contra 7 de riesgo). Cuanto más profundo el sweep y más abajo la entrada, mejor el ratio.
+    Regla: <strong>mínimo 1:1.5 hacia el primer objetivo</strong>, o se deja pasar aunque todo lo demás confirme.</p>
+  </div>
+</section>
+
+<!-- ============ 08. SECUENCIA IDEAL ============ -->
+<section id="secuencia">
+  <div class="eyebrow">Sección 08</div>
+  <h2>La secuencia ideal en el retest (Setup A, paso a paso visual)</h2>
+  <p>Así se ve la secuencia completa proyectada sobre un retest de zona, con su volumen. Los números
+  marcan el orden en que debe aparecer cada confirmación:</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg" role="img">
+      <defs><marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#2EBD85" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+      <text x="95" y="60" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Ahora</text>
+      <text x="200" y="60" font-size="12" fill="#8CA0B4" font-family="sans-serif">Proyección</text>
+      <line x1="150" y1="50" x2="150" y2="410" stroke="#26364A" stroke-dasharray="3 4"/>
+      <rect x="40" y="180" width="350" height="35" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <rect x="40" y="180" width="350" height="35" rx="4" fill="none" stroke="#26364A"/>
+      <text x="46" y="201" font-size="12" fill="#8CA0B4" font-family="sans-serif">FVG 15M · CE 50%</text>
+      <line x1="150" y1="197" x2="390" y2="197" stroke="#8CA0B4" stroke-width="0.6" stroke-dasharray="4 4"/>
+      <line x1="76" y1="82" x2="76" y2="205" stroke="#2EBD85"/><rect x="70" y="92" width="12" height="105" fill="#2EBD85"/>
+      <line x1="101" y1="98" x2="101" y2="172" stroke="#F6465D"/><rect x="95" y="105" width="12" height="58" fill="#F6465D"/>
+      <line x1="126" y1="142" x2="126" y2="192" stroke="#F6465D"/><rect x="120" y="150" width="12" height="36" fill="#F6465D"/>
+      <line x1="186" y1="180" x2="186" y2="232" stroke="#F6465D"/><rect x="180" y="186" width="12" height="30" fill="#F6465D"/>
+      <line x1="216" y1="190" x2="216" y2="252" stroke="#F6465D"/><rect x="210" y="196" width="12" height="26" fill="#F6465D"/>
+      <line x1="246" y1="132" x2="246" y2="246" stroke="#2EBD85"/><rect x="240" y="140" width="12" height="85" fill="#2EBD85"/>
+      <line x1="276" y1="122" x2="276" y2="162" stroke="#2EBD85"/><rect x="270" y="128" width="12" height="28" fill="#2EBD85"/>
+      <line x1="255" y1="110" x2="390" y2="110" stroke="#8CA0B4" stroke-dasharray="5 4"/>
+      <line x1="306" y1="76" x2="306" y2="150" stroke="#2EBD85"/><rect x="300" y="84" width="12" height="62" fill="#2EBD85"/>
+      <line x1="312" y1="76" x2="352" y2="50" stroke="#2EBD85" stroke-width="1.5" marker-end="url(#ar1)"/>
+      <text x="360" y="52" font-size="13.5" font-weight="600" fill="#2EBD85" font-family="sans-serif">Entrada</text>
+      <line x1="185" y1="266" x2="240" y2="266" stroke="#F6465D" stroke-dasharray="4 3"/>
+      <text x="248" y="270" font-size="12" fill="#F6465D" font-family="sans-serif">SL</text>
+      <line x1="390" y1="110" x2="412" y2="110" stroke="#5F7387" stroke-width="0.8"/>
+      <text x="418" y="114" font-size="12.5" fill="#D9E1EA" font-family="sans-serif">4. CHoCH: rompe el máximo menor</text>
+      <line x1="254" y1="170" x2="412" y2="170" stroke="#5F7387" stroke-width="0.8"/>
+      <text x="418" y="174" font-size="12.5" fill="#D9E1EA" font-family="sans-serif">2. Rechazo con cuerpo dominante</text>
+      <line x1="220" y1="252" x2="412" y2="252" stroke="#5F7387" stroke-width="0.8"/>
+      <text x="418" y="256" font-size="12.5" fill="#D9E1EA" font-family="sans-serif">1. Sweep de mínimos (mecha)</text>
+      <rect x="64" y="365" width="12" height="45" fill="#5F7387"/>
+      <rect x="89" y="380" width="12" height="30" fill="#5F7387"/>
+      <rect x="114" y="385" width="12" height="25" fill="#5F7387"/>
+      <rect x="174" y="390" width="12" height="20" fill="#5F7387"/>
+      <rect x="204" y="386" width="12" height="24" fill="#5F7387"/>
+      <rect x="234" y="340" width="12" height="70" fill="#2EBD85"/>
+      <rect x="264" y="380" width="12" height="30" fill="#5F7387"/>
+      <rect x="294" y="358" width="12" height="52" fill="#2EBD85" opacity="0.75"/>
+      <line x1="40" y1="378" x2="390" y2="378" stroke="#8CA0B4" stroke-width="0.6" stroke-dasharray="4 4"/>
+      <text x="46" y="372" font-size="11.5" fill="#8CA0B4" font-family="sans-serif">Volumen promedio</text>
+      <line x1="248" y1="345" x2="412" y2="345" stroke="#5F7387" stroke-width="0.8"/>
+      <text x="418" y="349" font-size="12.5" fill="#D9E1EA" font-family="sans-serif">3. Volumen sobre el promedio</text>
+    </svg>
+    <div class="figcap">FIG 03 — Setup A completo: sweep con mecha → rechazo con cuerpo → volumen → CHoCH. SL detrás de la mecha del sweep, no en el fondo de la zona.</div>
+  </div>
+  <h3>Cómo validar cada elemento en vivo</h3>
+  <ul>
+    <li><strong>Sweep:</strong> la mecha perfora los mínimos pero el precio no se queda abajo. Si una vela <em>cierra con cuerpo</em> debajo de la zona, es ruptura genuina — idea invalidada.</li>
+    <li><strong>Rechazo:</strong> cuerpo ≥ 60–70% del rango, cerrando sobre el CE (ideal: sobre el techo del FVG). Un martillo o mecha larga con cuerpo pequeño no cuenta solo.</li>
+    <li><strong>Volumen:</strong> barra claramente mayor a las recientes. En consolidación el volumen decae — por eso el pico del rechazo destaca: alguien absorbió el sweep con órdenes reales.</li>
+    <li><strong>CHoCH:</strong> cierre de cuerpo sobre el máximo de la mini-consolidación del retest — <em>no</em> el máximo del rango grande: ese es tu primer objetivo, no tu confirmación.</li>
+  </ul>
+
+  <h3>Origen del retroceso vs. micro-CHoCH: dos niveles, no uno solo</h3>
+  <p>Existe una regla clásica (teoría de Dow) que dice: tras el retest, espera que el precio supere el
+  punto exacto donde inició el retroceso — ese nivel actúa como resistencia, y superarlo confirma que la
+  tendencia sigue viva en vez de estar entrando en un rango. Es un concepto <strong>válido</strong> (ver Sección 02),
+  pero opera en una escala distinta al micro-CHoCH que usamos como gatillo de entrada.</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img">
+      <line x1="40" y1="60" x2="640" y2="60" stroke="#26364A" stroke-width="1" stroke-dasharray="6 4"/>
+      <text x="646" y="64" font-size="11.5" fill="#8CA0B4" text-anchor="start" font-family="sans-serif">X · Origen del retroceso</text>
+      <line x1="70" y1="180" x2="70" y2="240" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="63" y="200" width="14" height="35" fill="#2EBD85"/>
+      <line x1="100" y1="130" x2="100" y2="200" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="93" y="140" width="14" height="55" fill="#2EBD85"/>
+      <line x1="130" y1="60" x2="130" y2="150" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="123" y="66" width="14" height="75" fill="#2EBD85"/>
+      <rect x="150" y="215" width="220" height="34" rx="4" fill="#8CA0B4" opacity="0.14" stroke="#26364A"/>
+      <text x="160" y="235" font-size="11.5" fill="#8CA0B4" text-anchor="start" font-family="sans-serif">FVG / zona</text>
+      <line x1="185" y1="90" x2="185" y2="215" stroke="#F6465D" stroke-width="1.3"/>
+      <rect x="178" y="150" width="14" height="65" fill="#F6465D"/>
+      <line x1="215" y1="140" x2="215" y2="245" stroke="#F6465D" stroke-width="1.3"/>
+      <rect x="208" y="190" width="14" height="55" fill="#F6465D"/>
+      <line x1="255" y1="175" x2="255" y2="228" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="248" y="182" width="14" height="30" fill="#2EBD85"/>
+      <line x1="285" y1="190" x2="285" y2="240" stroke="#F6465D" stroke-width="1.3"/>
+      <rect x="278" y="198" width="14" height="28" fill="#F6465D"/>
+      <line x1="250" y1="180" x2="580" y2="180" stroke="#E8B54B" stroke-width="1" stroke-dasharray="5 4"/>
+      <text x="586" y="184" font-size="11.5" fill="#E8B54B" text-anchor="start" font-family="sans-serif">micro-CHoCH</text>
+      <path d="M285 235 Q310 205 330 175 L345 195" fill="none" stroke="#E8B54B" stroke-width="1.6"/>
+      <text x="345" y="270" font-size="12" fill="#E8B54B" text-anchor="middle" font-family="sans-serif">A. Rompe micro-CHoCH</text>
+      <text x="345" y="288" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Entrada rápida, SL ajustado</text>
+      <path d="M345 195 Q400 140 450 90 L480 60" fill="none" stroke="#2EBD85" stroke-width="1.6"/>
+      <circle cx="480" cy="60" r="4" fill="#2EBD85"/>
+      <text x="490" y="55" font-size="12" fill="#2EBD85" text-anchor="start" font-family="sans-serif">B. Rompe X (origen)</text>
+      <text x="490" y="73" font-size="11.5" fill="#8CA0B4" text-anchor="start" font-family="sans-serif">Confirma tendencia, descarta rango</text>
+      <path d="M345 195 Q380 165 400 130 Q420 105 410 95" fill="none" stroke="#F6465D" stroke-width="1.6" stroke-dasharray="4 3"/>
+      <circle cx="410" cy="95" r="4" fill="#F6465D"/>
+      <text x="416" y="100" font-size="11.5" fill="#F6465D" text-anchor="start" font-family="sans-serif">Si no rompe X → posible rango</text>
+    </svg>
+    <div class="figcap">FIG 03b — El micro-CHoCH (nivel dorado) es el gatillo de entrada. El origen del retroceso (X, nivel verde) es un nivel mayor: superarlo confirma tendencia; no superarlo es señal de alerta de rango.</div>
+  </div>
+  <table>
+    <tr><th>Nivel</th><th>Qué confirma</th><th>Costo</th></tr>
+    <tr><td>Micro-CHoCH (mini-consolidación)</td><td>Gatillo de entrada — permite SL ajustado y buen R:R</td><td>Algo más de riesgo de quedar en rango</td></tr>
+    <tr><td>Origen del retroceso (X)</td><td>Confirma que la tendencia sigue viva, descarta rango</td><td>Entrada más tardía y cara; a veces demasiado cerca del objetivo de liquidez</td></tr>
+  </table>
+  <div class="card gold">
+    <h4 class="g">Cómo usar los dos juntos</h4>
+    <p>No son excluyentes — son dos capas. Entra con el <strong>micro-CHoCH</strong> para conservar el R:R. Usa el
+    <strong>no-rompimiento de X</strong> como alerta temprana: si tras entrar el precio no logra superar el origen
+    del retroceso y forma un máximo más bajo, ahí tienes tu primera pista de que el mercado puede estar
+    entrando en rango — gestiona más conservador (parcial más rápido, SL a breakeven antes de lo habitual).</p>
+  </div>
+</section>
+
+</div>
+<!-- fin tab-confirmacion -->
+
+<!-- ===================================================== -->
+<!-- TAB 3 · ERRORES COMUNES                                -->
+<!-- ===================================================== -->
+<div id="tab-errores" class="tabpanel">
+
+<!-- ============ 09. LA TRAMPA ============ -->
+<section id="trampa">
+  <div class="eyebrow">Sección 09</div>
+  <h2>La trampa del impulso hacia liquidez (caso EURUSD 08-JUL)</h2>
+  <p>Una vela grande, con cuerpo sobre la zona y volumen alto puede parecer confirmación y no serlo.
+  El error está en la <strong>ubicación</strong>: si la vela viaja <em>hacia</em> un pool de liquidez (máximos previos),
+  ese volumen suele ser distribución — instituciones vendiendo a los compradores retail. El sweep debe
+  ocurrir <em>antes</em> de la reacción, no al final de la vela de "confirmación".</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" role="img">
+      <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#2EBD85" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+      <text x="180" y="40" font-size="14.5" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">Lo que NO es confirmación</text>
+      <text x="180" y="58" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Impulso dentro del rango</text>
+      <text x="180" y="88" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Máximo previo = liquidez</text>
+      <line x1="50" y1="100" x2="310" y2="100" stroke="#8CA0B4" stroke-dasharray="5 4"/>
+      <rect x="50" y="230" width="260" height="34" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <text x="60" y="251" font-size="11.5" fill="#8CA0B4" font-family="sans-serif">FVG / IFVG</text>
+      <line x1="115" y1="228" x2="115" y2="272" stroke="#5F7387"/><rect x="110" y="236" width="10" height="26" fill="#5F7387"/>
+      <line x1="145" y1="92" x2="145" y2="272" stroke="#2EBD85"/><rect x="139" y="105" width="12" height="160" fill="#2EBD85"/>
+      <line x1="170" y1="108" x2="170" y2="195" stroke="#F6465D"/><rect x="164" y="115" width="12" height="70" fill="#F6465D"/>
+      <line x1="195" y1="170" x2="195" y2="262" stroke="#F6465D"/><rect x="189" y="178" width="12" height="72" fill="#F6465D"/>
+      <text x="180" y="300" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Impulso directo hacia la liquidez, sin BOS</text>
+      <line x1="340" y1="30" x2="340" y2="310" stroke="#26364A" stroke-dasharray="2 4"/>
+      <text x="500" y="40" font-size="14.5" font-weight="600" fill="#2EBD85" text-anchor="middle" font-family="sans-serif">Confirmación válida</text>
+      <text x="500" y="58" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">BOS, retest y continuación</text>
+      <line x1="370" y1="100" x2="630" y2="100" stroke="#8CA0B4" stroke-dasharray="5 4"/>
+      <rect x="370" y="230" width="260" height="34" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <text x="380" y="251" font-size="11.5" fill="#8CA0B4" font-family="sans-serif">FVG / IFVG</text>
+      <line x1="430" y1="60" x2="430" y2="268" stroke="#2EBD85"/><rect x="424" y="70" width="12" height="180" fill="#2EBD85"/>
+      <text x="448" y="74" font-size="12" fill="#2EBD85" font-family="sans-serif">BOS</text>
+      <line x1="460" y1="78" x2="460" y2="118" stroke="#F6465D"/><rect x="454" y="82" width="12" height="30" fill="#F6465D"/>
+      <line x1="485" y1="84" x2="485" y2="126" stroke="#2EBD85"/><rect x="479" y="88" width="12" height="26" fill="#2EBD85"/>
+      <line x1="505" y1="82" x2="560" y2="48" stroke="#2EBD85" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <text x="500" y="300" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Rompe primero, retestea y rechaza = entrada</text>
+    </svg>
+    <div class="figcap">FIG 04 — Izquierda: la vela cierra fuerte pero choca con el máximo previo sin romperlo (rotación de rango). Derecha: BOS con cuerpo primero, entrada en el retest.</div>
+  </div>
+  <div class="card gold">
+    <h4 class="g">Regla que resuelve la trampa</h4>
+    <p>Vela de impulso = "hay interés". BOS con cuerpo sobre el máximo previo = "la estructura cambió".
+    Retest con rechazo = <strong>esa es la entrada</strong>. El retroceso posterior a un impulso no invalida la idea:
+    el retest <em>es el mecanismo de entrada</em>, y suele ofrecer el trade más barato y con mejor R:R.</p>
+  </div>
+</section>
+
+<!-- ============ 10. MÁXIMOS IGUALES ============ -->
+<section id="escenarios">
+  <div class="eyebrow">Sección 10</div>
+  <h2>Escenarios en máximos iguales (liquidez como imán)</h2>
+  <p>Cuando el precio se acerca a máximos iguales, no se compra pegado a ellos. Se espera la resolución,
+  que solo tiene dos formas:</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" role="img">
+      <defs>
+        <marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#2EBD85" stroke-width="1.5" stroke-linecap="round"/></marker>
+        <marker id="ar4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#F6465D" stroke-width="1.5" stroke-linecap="round"/></marker>
+      </defs>
+      <text x="340" y="72" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Máximos iguales = liquidez</text>
+      <line x1="60" y1="90" x2="620" y2="90" stroke="#8CA0B4" stroke-dasharray="6 4"/>
+      <line x1="156" y1="122" x2="156" y2="185" stroke="#2EBD85"/><rect x="150" y="130" width="12" height="45" fill="#2EBD85"/>
+      <text x="156" y="205" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Ahora</text>
+      <path d="M156 125 Q200 88 235 55 L268 88 L318 38" fill="none" stroke="#2EBD85" stroke-width="1.5" marker-end="url(#ar3)"/>
+      <path d="M164 130 C260 140 380 128 445 105 L462 58 L478 108 L515 222" fill="none" stroke="#F6465D" stroke-width="1.5" marker-end="url(#ar4)"/>
+      <line x1="60" y1="264" x2="85" y2="264" stroke="#2EBD85" stroke-width="2.5"/>
+      <text x="92" y="268" font-size="12.5" fill="#D9E1EA" font-family="sans-serif">A. Rompe con cuerpo y retestea el nivel: continuación (Setup D)</text>
+      <line x1="60" y1="290" x2="85" y2="290" stroke="#F6465D" stroke-width="2.5"/>
+      <text x="92" y="294" font-size="12.5" fill="#D9E1EA" font-family="sans-serif">B. Mecha arriba y cierre abajo: sweep de máximos — no comprar</text>
+    </svg>
+    <div class="figcap">FIG 05 — En B, si el rechazo viene con volumen alto es distribución; el interés vuelve a la zona FVG inferior para un pullback más profundo.</div>
+  </div>
+</section>
+
+<!-- ============ 11. QUÉ NO ES CONFIRMACIÓN ============ -->
+<section id="no-confirmacion">
+  <div class="eyebrow">Sección 11</div>
+  <h2>Qué NO es confirmación</h2>
+  <table>
+    <tr><th>Señal engañosa</th><th>Por qué falla</th></tr>
+    <tr><td>Ruptura de consolidación interna sin retest</td><td>Error documentado nº 1 (XAUUSD). El trade válido es ruptura → retest → movimiento con volumen, no la ruptura sola.</td></tr>
+    <tr><td>Vela grande + volumen viajando hacia liquidez</td><td>Error documentado nº 2 (EURUSD 08-JUL). Alto volumen <em>hacia</em> máximos iguales suele ser distribución, no absorción.</td></tr>
+    <tr><td>Martillo, Harami u otra vela de indecisión sola</td><td>Patrones de una vela = poco fiables. Solo cuentan patrones multi-vela con cuerpos dominantes: Envolvente, Tres Soldados, tercera vela de Estrella de la Mañana.</td></tr>
+    <tr><td>Mecha que toca la zona sin cierre de cuerpo</td><td>El toque no es reacción. Sin cierre de cuerpo a favor, no hay dato.</td></tr>
+    <tr><td>Vela de 15M sin cerrar</td><td>Nada se evalúa hasta el cierre. Especialmente cerca de noticias de alto impacto.</td></tr>
+    <tr><td>Order block solitario</td><td>Subjetividad alta. Confluencia sí, gatillo jamás.</td></tr>
+    <tr><td>Rebote con volumen bajo dentro de rango</td><td>Movimiento sin convicción: se revierte con la misma facilidad con la que subió.</td></tr>
+  </table>
+</section>
+
+<!-- ============ 12. SWEEP VS RUPTURA ============ -->
+<section id="sweep">
+  <div class="eyebrow">Sección 12</div>
+  <h2>Sweep vs. ruptura genuina</h2>
+  <p>La distinción que ordena todo el sistema: <strong>mecha = sweep</strong> (caza de stops, el nivel sigue vivo);
+  <strong>cierre de cuerpo = ruptura genuina</strong> (la estructura cambió de verdad).</p>
+  <div class="fig">
+    <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img">
+      <text x="180" y="34" font-size="14" font-weight="600" fill="#2EBD85" text-anchor="middle" font-family="sans-serif">Sweep (mecha)</text>
+      <rect x="50" y="120" width="260" height="32" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <text x="58" y="140" font-size="11.5" fill="#8CA0B4" font-family="sans-serif">Zona / mínimos</text>
+      <line x1="150" y1="70" x2="150" y2="195" stroke="#2EBD85"/>
+      <rect x="144" y="78" width="12" height="58" fill="#2EBD85"/>
+      <text x="180" y="212" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">La mecha perfora, el cuerpo cierra dentro/encima</text>
+      <text x="180" y="240" font-size="12" fill="#2EBD85" text-anchor="middle" font-weight="600" font-family="sans-serif">El nivel sigue vivo → buscar reacción</text>
+      <line x1="340" y1="24" x2="340" y2="246" stroke="#26364A" stroke-dasharray="2 4"/>
+      <text x="500" y="34" font-size="14" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">Ruptura genuina (cuerpo)</text>
+      <rect x="370" y="120" width="260" height="32" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <text x="378" y="140" font-size="11.5" fill="#8CA0B4" font-family="sans-serif">Zona / mínimos</text>
+      <line x1="470" y1="70" x2="470" y2="205" stroke="#F6465D"/>
+      <rect x="464" y="80" width="12" height="115" fill="#F6465D"/>
+      <text x="500" y="222" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">El cuerpo cierra a través de la zona</text>
+      <text x="500" y="244" font-size="12" fill="#F6465D" text-anchor="middle" font-weight="600" font-family="sans-serif">Idea invalidada → posible flip a IFVG</text>
+    </svg>
+    <div class="figcap">FIG 06 — La misma perforación con desenlace opuesto según dónde cierre el cuerpo.</div>
+  </div>
+</section>
+
+</div>
+<!-- fin tab-errores -->
+
+<!-- ===================================================== -->
+<!-- TAB 4 · GESTIÓN                                        -->
+<!-- ===================================================== -->
+<div id="tab-gestion" class="tabpanel">
+
+<!-- ============ 13. SL Y TP ============ -->
+<section id="sltp">
+  <div class="eyebrow">Sección 13</div>
+  <h2>Stop loss y take profit</h2>
+  <div class="card gold">
+    <h4 class="g">¿En qué temporalidad se define cada uno?</h4>
+    <p>El SL se define en <strong>15M</strong>: es la temporalidad de tu entrada, y se ancla al swing específico
+    de la vela de confirmación — el nivel que invalida <em>tu setup concreto</em>, no la idea macro. El TP se
+    define en <strong>1H</strong> (con un ojo en 4H): los objetivos son pools de liquidez, y esos viven en la
+    temporalidad de contexto, no en la de ejecución.</p>
+    <p><strong>En una frase: entras y te proteges en la temporalidad de ejecución (15M); apuntas en la
+    temporalidad de contexto (1H).</strong> Es la misma lógica top-down de toda la estrategia — zona en 1H,
+    gatillo en 15M — aplicada a la gestión.</p>
+  </div>
+  <ul>
+    <li><strong>SL:</strong> detrás de la mecha del swing de confirmación (el sweep o el mínimo del retest) más un buffer pequeño. <strong>Nunca en el borde completo de la zona FVG</strong> — ese fue el error del trade de XAUUSD: riesgo excesivamente ancho para el setup específico operado.</li>
+    <li><strong>TP1:</strong> la primera liquidez (máximos/mínimos iguales más cercanos). Cierre parcial + SL a breakeven.</li>
+    <li><strong>TP2:</strong> la siguiente liquidez, filtrada con volume profile: los LVN se cruzan rápido, los HVN y el POC frenan — no coloques el TP justo después de un HVN grueso, colócalo antes.</li>
+    <li><strong>R:R mínimo 1:1.5 hacia TP1</strong> o el trade no se toma (quinto filtro, Sección 07).</li>
+  </ul>
+</section>
+
+<!-- ============ 14. INSTRUMENTOS ============ -->
+<section id="instrumentos">
+  <div class="eyebrow">Sección 14</div>
+  <h2>Instrumentos</h2>
+  <table>
+    <tr><th>Instrumento</th><th>Por qué funciona con ICT/FVG</th><th>Precaución</th></tr>
+    <tr><td>EURUSD</td><td>Par más líquido del mundo; instrumento de referencia de ICT en forex; sesiones muy definidas</td><td>Tick volume de broker: volumen solo como confluencia</td></tr>
+    <tr><td>XAUUSD</td><td>Barre liquidez constantemente, desplazamientos limpios, muy "ICT-friendly"</td><td>Volatilidad alta: stops más amplios, mechas violentas</td></tr>
+    <tr><td>SP500</td><td>Volumen institucional dominante, respeta bien las zonas</td><td>Sensible a todo el calendario macro de EE.UU.</td></tr>
+  </table>
+  <div class="card red">
+    <h4 class="r">Nota sobre Nasdaq (NAS100)</h4>
+    <p>Popular para ICT por su volatilidad (FVGs grandes y frecuentes), pero <strong>correlaciona casi 1:1 con
+    SP500</strong>: agregarlo no diversifica, duplica el riesgo — dos posiciones en la misma dirección equivalen
+    a una con el doble de tamaño. Si algún día se quiere más movimiento, la jugada es <em>cambiar</em> SP500
+    por NAS100, no sumarlo.</p>
+  </div>
+</section>
+
+<!-- ============ 15. NOTICIAS ============ -->
+<section id="noticias">
+  <div class="eyebrow">Sección 15</div>
+  <h2>Protocolo de noticias fundamentales</h2>
+  <ol class="steps">
+    <li><strong>Revisa el calendario antes de la sesión.</strong> Marca los eventos de alto impacto (EUR y USD afectan a los tres instrumentos; el USD mueve todo).</li>
+    <li><strong>Regla de la vela completa:</strong> cerca de una publicación de alto impacto, ninguna entrada hasta que cierre una vela de 15M completa <em>después</em> de la noticia.</li>
+    <li><strong>Mapea cada noticia a sesgo por instrumento:</strong> alcista / bajista / neutral para EURUSD, XAUUSD y SP500, distinguiendo evento macro-fundamental de evento operativo puntual.</li>
+    <li><strong>Lecturas cruzadas:</strong> una misma publicación de EE.UU. da señal en los tres motores — divisa (diferencial BCE/Fed), refugio (oro) y renta variable (índice). La coherencia entre las tres lecturas valida el sesgo.</li>
+    <li><strong>Si la noticia contradice el setup técnico, el setup se descarta.</strong> El técnico manda en la ejecución; el fundamental manda en el veto.</li>
+  </ol>
+</section>
+
+</div>
+<!-- fin tab-gestion -->
+
+<!-- ===================================================== -->
+<!-- TAB 5 · LECCIONES APRENDIDAS                           -->
+<!-- ===================================================== -->
+<div id="tab-lecciones" class="tabpanel">
+
+<!-- ============ 16. LECCIONES ============ -->
+<section id="lecciones">
+  <div class="eyebrow">Sección 16</div>
+  <h2>Lecciones aprendidas: registro de errores propios</h2>
+  <p>Este apartado documenta trades y decisiones reales revisadas. Cada caso registra qué se leyó mal
+  y qué regla nació de ahí. <strong>Saber qué hacer importa; saber qué NO hacer es lo que protege la cuenta.</strong>
+  Este registro se actualiza tras cada revisión de pérdidas.</p>
+
+  <div class="card red">
+    <h4 class="r">Caso 1 · XAUUSD — Ruptura sin retest + SL en el borde de la zona</h4>
+    <p><strong>Qué pasó:</strong> entrada en la ruptura de una consolidación interna, sin esperar el retest. El precio
+    regresó, atravesó el nivel y llegó hasta el SL — que estaba en el borde completo de la zona FVG,
+    dando un riesgo mucho más ancho de lo que el setup justificaba.</p>
+    <p><strong>Lección doble:</strong> (1) la ruptura es el aviso, el retest es el trade — la secuencia válida es
+    ruptura → retest → movimiento con confirmación; (2) el SL se ancla al swing de la confirmación
+    específica, nunca al borde de toda la zona.</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" role="img">
+      <rect x="60" y="110" width="180" height="70" rx="4" fill="none" stroke="#8CA0B4" stroke-width="0.8" stroke-dasharray="5 4"/>
+      <text x="66" y="102" font-size="11.5" fill="#8CA0B4" font-family="sans-serif">Consolidación interna</text>
+      <line x1="85" y1="118" x2="85" y2="176" stroke="#5F7387"/><rect x="79" y="128" width="12" height="38" fill="#5F7387"/>
+      <line x1="115" y1="122" x2="115" y2="178" stroke="#5F7387"/><rect x="109" y="132" width="12" height="36" fill="#5F7387"/>
+      <line x1="145" y1="116" x2="145" y2="174" stroke="#5F7387"/><rect x="139" y="126" width="12" height="38" fill="#5F7387"/>
+      <line x1="175" y1="120" x2="175" y2="176" stroke="#5F7387"/><rect x="169" y="130" width="12" height="36" fill="#5F7387"/>
+      <line x1="205" y1="118" x2="205" y2="174" stroke="#5F7387"/><rect x="199" y="128" width="12" height="36" fill="#5F7387"/>
+      <line x1="255" y1="78" x2="255" y2="185" stroke="#2EBD85"/><rect x="249" y="88" width="12" height="77" fill="#2EBD85"/>
+      <text x="255" y="66" font-size="12" font-weight="700" fill="#F6465D" text-anchor="middle" font-family="sans-serif">✗ entrada</text>
+      <line x1="290" y1="88" x2="290" y2="152" stroke="#F6465D"/><rect x="284" y="95" width="12" height="50" fill="#F6465D"/>
+      <line x1="320" y1="128" x2="320" y2="202" stroke="#F6465D"/><rect x="314" y="135" width="12" height="60" fill="#F6465D"/>
+      <line x1="350" y1="178" x2="350" y2="248" stroke="#F6465D"/><rect x="344" y="185" width="12" height="55" fill="#F6465D"/>
+      <line x1="380" y1="224" x2="380" y2="296" stroke="#F6465D"/><rect x="374" y="230" width="12" height="48" fill="#F6465D"/>
+      <rect x="60" y="250" width="360" height="38" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <text x="68" y="272" font-size="11.5" fill="#8CA0B4" font-family="sans-serif">Zona FVG</text>
+      <line x1="60" y1="292" x2="420" y2="292" stroke="#F6465D" stroke-width="1" stroke-dasharray="5 3"/>
+      <line x1="262" y1="86" x2="432" y2="86" stroke="#5F7387" stroke-width="0.8"/>
+      <text x="438" y="90" font-size="11.5" fill="#D9E1EA" font-family="sans-serif">1. Entró en la ruptura, sin retest</text>
+      <line x1="358" y1="178" x2="432" y2="178" stroke="#5F7387" stroke-width="0.8"/>
+      <text x="438" y="182" font-size="11.5" fill="#D9E1EA" font-family="sans-serif">2. El precio regresó: nunca hubo</text>
+      <text x="438" y="198" font-size="11.5" fill="#D9E1EA" font-family="sans-serif">rechazo ni CHoCH que confirmara</text>
+      <line x1="420" y1="292" x2="432" y2="292" stroke="#5F7387" stroke-width="0.8"/>
+      <text x="438" y="288" font-size="11.5" fill="#F6465D" font-family="sans-serif">3. SL en el borde de la zona:</text>
+      <text x="438" y="304" font-size="11.5" fill="#F6465D" font-family="sans-serif">riesgo ancho y aun así saltó</text>
+    </svg>
+    <div class="figcap">FIG 07 — Anatomía del error de XAUUSD: los tres fallos encadenados. La versión correcta de este trade es el Setup D (Sección 07) con el SL de la Sección 13.</div>
+  </div>
+
+  <div class="card red">
+    <h4 class="r">Caso 2 · EURUSD 08-JUL — El impulso hacia liquidez que parecía confirmación</h4>
+    <p><strong>Qué pasó:</strong> vela grande, cuerpo cerrando sobre la zona y volumen superior a las anteriores —
+    cumplía la "forma" de confirmación. Pero viajaba directo hacia los máximos iguales (liquidez) sin BOS
+    previo, dentro de un rango. Habría sido comprar en el techo justo antes del retroceso.</p>
+    <p><strong>Lección:</strong> la ubicación manda sobre la forma. El sweep debe ocurrir <em>antes</em> de la reacción,
+    no al final de la vela. Volumen alto viajando hacia liquidez = distribución probable, no absorción.
+    Diagrama completo en la Sección 09 (FIG 04).</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" role="img">
+      <text x="240" y="46" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Máximos iguales = liquidez</text>
+      <line x1="60" y1="62" x2="430" y2="62" stroke="#8CA0B4" stroke-dasharray="6 4"/>
+      <rect x="60" y="200" width="370" height="32" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <text x="68" y="220" font-size="11.5" fill="#8CA0B4" font-family="sans-serif">FVG</text>
+      <line x1="120" y1="196" x2="120" y2="238" stroke="#5F7387"/><rect x="114" y="204" width="10" height="26" fill="#5F7387"/>
+      <line x1="170" y1="56" x2="170" y2="238" stroke="#2EBD85"/><rect x="164" y="70" width="12" height="162" fill="#2EBD85"/>
+      <line x1="205" y1="80" x2="205" y2="158" stroke="#F6465D"/><rect x="199" y="88" width="12" height="62" fill="#F6465D"/>
+      <line x1="240" y1="136" x2="240" y2="222" stroke="#F6465D"/><rect x="234" y="144" width="12" height="70" fill="#F6465D"/>
+      <line x1="178" y1="74" x2="448" y2="74" stroke="#5F7387" stroke-width="0.8"/>
+      <text x="456" y="70" font-size="12" fill="#D9E1EA" font-family="sans-serif">Cuerpo fuerte + volumen alto,</text>
+      <text x="456" y="86" font-size="12" fill="#F6465D" font-family="sans-serif">pero SIN BOS previo</text>
+      <text x="456" y="118" font-size="12" fill="#D9E1EA" font-family="sans-serif">La vela viaja HACIA la liquidez:</text>
+      <text x="456" y="134" font-size="12" fill="#D9E1EA" font-family="sans-serif">el sweep ocurre al final,</text>
+      <text x="456" y="150" font-size="12" fill="#D9E1EA" font-family="sans-serif">no antes de la reacción</text>
+      <text x="245" y="262" font-size="12" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Distribución: compradores retail arriba, instituciones vendiendo</text>
+    </svg>
+    <div class="figcap">FIG 09 — Caso 2 en compacto: la forma de una confirmación, en el lugar equivocado. Versión completa con el escenario correcto en FIG 04.</div>
+  </div>
+
+  <div class="card red">
+    <h4 class="r">Caso 3 · EURUSD 08-JUL (noche) — El casi-trade con checklist incompleto</h4>
+    <p><strong>Qué pasó:</strong> tras el retest de la zona, el precio rebotó y la tentación fue entrar. Pero el
+    checklist decía otra cosa: sin sweep de mínimos, sin volumen sobre promedio, CHoCH pendiente, y el
+    precio a 3 pips de los máximos iguales con ~7 pips de riesgo (R:R ≈ 1:0.4).</p>
+    <p><strong>Lección:</strong> un setup "casi completo" no es un setup. Y la más importante: <em>no operar fue la
+    decisión correcta, no una oportunidad perdida</em>. El precio que se va sin dar entrada limpia no te debe
+    nada — la siguiente zona siempre llega.</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img">
+      <text x="270" y="46" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">TP1 · máximos iguales</text>
+      <line x1="60" y1="60" x2="480" y2="60" stroke="#8CA0B4" stroke-dasharray="6 4"/>
+      <rect x="60" y="150" width="420" height="32" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <text x="68" y="170" font-size="11.5" fill="#8CA0B4" font-family="sans-serif">Zona del retest (fondo = SL)</text>
+      <line x1="150" y1="144" x2="150" y2="188" stroke="#2EBD85"/><rect x="144" y="150" width="12" height="30" fill="#2EBD85"/>
+      <line x1="185" y1="112" x2="185" y2="160" stroke="#2EBD85"/><rect x="179" y="120" width="12" height="35" fill="#2EBD85"/>
+      <line x1="220" y1="84" x2="220" y2="130" stroke="#2EBD85"/><rect x="214" y="92" width="12" height="33" fill="#2EBD85"/>
+      <circle cx="240" cy="90" r="4" fill="#E8B54B"/>
+      <text x="252" y="94" font-size="12" fill="#E8B54B" font-family="sans-serif">Entrada tentada</text>
+      <line x1="530" y1="60" x2="530" y2="90" stroke="#2EBD85" stroke-width="2"/>
+      <line x1="524" y1="60" x2="536" y2="60" stroke="#2EBD85" stroke-width="2"/>
+      <line x1="524" y1="90" x2="536" y2="90" stroke="#2EBD85" stroke-width="2"/>
+      <text x="544" y="79" font-size="12" fill="#2EBD85" font-family="sans-serif">Recorrido ≈ 3 pips</text>
+      <line x1="530" y1="90" x2="530" y2="160" stroke="#F6465D" stroke-width="2"/>
+      <line x1="524" y1="160" x2="536" y2="160" stroke="#F6465D" stroke-width="2"/>
+      <text x="544" y="129" font-size="12" fill="#F6465D" font-family="sans-serif">Riesgo ≈ 7 pips</text>
+      <text x="270" y="222" font-size="12.5" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">R:R ≈ 1:0.4 — el quinto filtro veta la entrada aunque "casi" confirme</text>
+      <text x="270" y="244" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Además faltaban: sweep de mínimos, volumen sobre promedio y CHoCH cerrado</text>
+    </svg>
+    <div class="figcap">FIG 10 — Caso 3: la geometría del casi-trade. Comprar pegado a la liquidez invierte el ratio: poco por ganar, mucho por perder.</div>
+  </div>
+
+  <div class="card red">
+    <h4 class="r">Caso 4 · Concepto corregido — El flip de polaridad mal entendido</h4>
+    <p><strong>Qué pasó:</strong> al inicio se interpretaba el IFVG sin distinguir mecha de cuerpo: cualquier
+    perforación de la zona parecía invalidarla, generando lecturas contradictorias de la misma zona.</p>
+    <p><strong>Lección:</strong> la invalidación (y por tanto el flip FVG→IFVG) exige <em>cierre de cuerpo</em> a través
+    de la zona. Mecha a través = sweep, la zona sigue viva. Esta distinción cuerpo/mecha ordena todo el
+    sistema (Secciones 03 y 12).</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" role="img">
+      <text x="175" y="34" font-size="13.5" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">✗ Lectura errónea de antes</text>
+      <rect x="50" y="105" width="250" height="34" rx="4" fill="#2EBD85" opacity="0.16" stroke="#1E5C46"/>
+      <line x1="170" y1="70" x2="170" y2="175" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="163" y="78" width="14" height="30" fill="#2EBD85"/>
+      <text x="175" y="200" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">"La mecha atravesó: la zona quedó invalidada"</text>
+      <text x="175" y="222" font-size="12" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">Error: mecha = sweep, la zona sigue viva</text>
+      <line x1="340" y1="24" x2="340" y2="235" stroke="#26364A" stroke-dasharray="2 4"/>
+      <text x="510" y="34" font-size="13.5" font-weight="600" fill="#2EBD85" text-anchor="middle" font-family="sans-serif">✓ Lectura correcta</text>
+      <rect x="385" y="105" width="250" height="34" rx="4" fill="#2EBD85" opacity="0.16" stroke="#1E5C46"/>
+      <line x1="505" y1="60" x2="505" y2="185" stroke="#F6465D" stroke-width="1.3"/>
+      <rect x="498" y="68" width="14" height="110" fill="#F6465D"/>
+      <text x="510" y="200" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">El cuerpo cierra a través de la zona</text>
+      <text x="510" y="222" font-size="12" font-weight="600" fill="#2EBD85" text-anchor="middle" font-family="sans-serif">Invalidación real → flip de polaridad a IFVG</text>
+    </svg>
+    <div class="figcap">FIG 11 — Caso 4: la misma perforación con dos significados opuestos. La corrección de esta lectura fue fundacional para todo el sistema.</div>
+  </div>
+
+  <div class="card red">
+    <h4 class="r">Caso 5 · Patrones de una sola vela como gatillo</h4>
+    <p><strong>Qué pasó:</strong> entradas tomadas con martillos y velas de indecisión en la zona, sin estructura que
+    las respaldara. Resultado inconsistente: el mismo patrón a veces funcionaba y a veces no.</p>
+    <p><strong>Lección:</strong> los patrones de una vela no tienen dominancia — son contexto, no gatillo. Solo cuentan
+    los patrones multi-vela con cuerpos dominantes, y siempre subordinados al núcleo obligatorio
+    (rechazo con cuerpo + ruptura estructural).</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" role="img">
+      <text x="170" y="34" font-size="13.5" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">✗ Martillo solo = moneda al aire</text>
+      <rect x="50" y="170" width="240" height="30" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <line x1="120" y1="100" x2="120" y2="206" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="113" y="102" width="14" height="22" fill="#2EBD85"/>
+      <path d="M135 98 Q175 70 215 52" fill="none" stroke="#2EBD85" stroke-width="1.4" stroke-dasharray="5 3"/>
+      <text x="228" y="54" font-size="11.5" fill="#2EBD85" font-family="sans-serif">a veces sube</text>
+      <path d="M135 112 Q180 160 215 220" fill="none" stroke="#F6465D" stroke-width="1.4" stroke-dasharray="5 3"/>
+      <text x="228" y="228" font-size="11.5" fill="#F6465D" font-family="sans-serif">a veces cae</text>
+      <text x="170" y="260" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">El mismo patrón, dos destinos: sin ventaja estadística</text>
+      <line x1="340" y1="24" x2="340" y2="266" stroke="#26364A" stroke-dasharray="2 4"/>
+      <text x="510" y="34" font-size="13.5" font-weight="600" fill="#2EBD85" text-anchor="middle" font-family="sans-serif">✓ Martillo + estructura = dato</text>
+      <rect x="385" y="170" width="245" height="30" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <line x1="440" y1="100" x2="440" y2="206" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="433" y="102" width="14" height="22" fill="#2EBD85"/>
+      <line x1="425" y1="82" x2="630" y2="82" stroke="#E8B54B" stroke-width="0.9" stroke-dasharray="5 4"/>
+      <text x="628" y="76" font-size="11" fill="#E8B54B" text-anchor="end" font-family="sans-serif">máximo menor</text>
+      <line x1="490" y1="46" x2="490" y2="130" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="483" y="52" width="14" height="70" fill="#2EBD85"/>
+      <path d="M505 50 L545 30" fill="none" stroke="#2EBD85" stroke-width="1.5"/>
+      <path d="M538 29 L546 29 L543 37" fill="none" stroke="#2EBD85" stroke-width="1.5"/>
+      <text x="510" y="240" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">La vela siguiente rompe el máximo menor con cuerpo:</text>
+      <text x="510" y="260" font-size="11.5" fill="#2EBD85" text-anchor="middle" font-family="sans-serif">el martillo pasa de "contexto" a parte de una confirmación real</text>
+    </svg>
+    <div class="figcap">FIG 12 — Caso 5: el patrón de una vela no decide nada por sí solo; la estructura que le sigue es lo que lo convierte en señal.</div>
+  </div>
+
+  <h3>Galería visual: falsas confirmaciones de un vistazo</h3>
+  <div class="fig">
+    <svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="img">
+      <line x1="340" y1="20" x2="340" y2="400" stroke="#26364A" stroke-dasharray="2 4"/>
+      <line x1="40" y1="210" x2="640" y2="210" stroke="#26364A" stroke-dasharray="2 4"/>
+
+      <text x="170" y="38" font-size="13" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">✗ Vela de indecisión sola</text>
+      <rect x="70" y="140" width="200" height="30" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <line x1="170" y1="78" x2="170" y2="166" stroke="#2EBD85" stroke-width="1.3"/>
+      <rect x="163" y="82" width="14" height="24" fill="#2EBD85"/>
+      <text x="170" y="192" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Mecha larga, cuerpo chico: sin dominancia</text>
+
+      <text x="510" y="38" font-size="13" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">✗ Toque sin reacción</text>
+      <rect x="410" y="140" width="200" height="30" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <line x1="510" y1="70" x2="510" y2="166" stroke="#F6465D" stroke-width="1.3"/>
+      <rect x="503" y="92" width="14" height="42" fill="#F6465D"/>
+      <text x="510" y="192" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">La mecha toca la zona, el cuerpo no cierra a favor</text>
+
+      <text x="170" y="238" font-size="13" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">✗ Vela sin cerrar</text>
+      <rect x="70" y="330" width="200" height="30" rx="4" fill="#8CA0B4" opacity="0.14"/>
+      <line x1="170" y1="262" x2="170" y2="356" stroke="#2EBD85" stroke-width="1.3" stroke-dasharray="3 3"/>
+      <rect x="163" y="272" width="14" height="64" fill="none" stroke="#2EBD85" stroke-width="1.3" stroke-dasharray="3 3"/>
+      <text x="170" y="384" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Nada se evalúa hasta el cierre de 15M</text>
+
+      <text x="510" y="238" font-size="13" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">✗ Rebote sin volumen en rango</text>
+      <line x1="430" y1="300" x2="430" y2="336" stroke="#2EBD85" stroke-width="1.2"/><rect x="424" y="305" width="12" height="24" fill="#2EBD85"/>
+      <line x1="460" y1="286" x2="460" y2="322" stroke="#2EBD85" stroke-width="1.2"/><rect x="454" y="291" width="12" height="22" fill="#2EBD85"/>
+      <line x1="490" y1="274" x2="490" y2="308" stroke="#2EBD85" stroke-width="1.2"/><rect x="484" y="279" width="12" height="20" fill="#2EBD85"/>
+      <line x1="420" y1="352" x2="620" y2="352" stroke="#8CA0B4" stroke-width="0.6" stroke-dasharray="4 4"/>
+      <text x="614" y="346" font-size="10.5" fill="#8CA0B4" text-anchor="end" font-family="sans-serif">promedio</text>
+      <rect x="424" y="362" width="12" height="14" fill="#5F7387"/>
+      <rect x="454" y="364" width="12" height="12" fill="#5F7387"/>
+      <rect x="484" y="363" width="12" height="13" fill="#5F7387"/>
+      <text x="510" y="400" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">Sube sin convicción: se revierte igual de fácil</text>
+    </svg>
+    <div class="figcap">FIG 08 — Cuatro señales que parecen confirmación y no lo son. Complementan la trampa del impulso hacia liquidez (FIG 04) y la tabla de la Sección 11.</div>
+  </div>
+
+  <div class="card red">
+    <h4 class="r">Caso 6 · Setup E no reconocido — Corto en el retest sin evaluar el contexto</h4>
+    <p><strong>Qué pasó:</strong> FVG bajista en 1H → baja un poco más (mínimo menor) → retest de la zona → entrada
+    en corto ahí mismo. El precio bajó otro poco más, pero solo barrió el mínimo con mecha — no fue
+    continuación, fue el sweep del Setup E. La vela siguiente cerró con cuerpo sobre el FVG, invirtiéndolo
+    en IFVG, y el impulso posterior se llevó el SL por delante.</p>
+    <div class="fig" style="margin-top:14px">
+      <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img">
+        <line x1="340" y1="20" x2="340" y2="240" stroke="#26364A" stroke-dasharray="2 4"/>
+        <text x="170" y="36" font-size="13" font-weight="600" fill="#F6465D" text-anchor="middle" font-family="sans-serif">❌ Lo que hice</text>
+        <rect x="60" y="90" width="220" height="24" rx="4" fill="#8CA0B4" opacity="0.14"/>
+        <line x1="120" y1="70" x2="120" y2="112" stroke="#2EBD85" stroke-width="1.3"/><rect x="114" y="78" width="12" height="28" fill="#2EBD85"/>
+        <circle cx="120" cy="92" r="12" fill="none" stroke="#F6465D" stroke-width="1.8"/>
+        <text x="140" y="96" font-size="11.5" fill="#F6465D" font-family="sans-serif">SHORT en el retest</text>
+        <line x1="160" y1="100" x2="160" y2="150" stroke="#F6465D" stroke-width="1.3"/><rect x="154" y="106" width="12" height="40" fill="#F6465D"/>
+        <line x1="185" y1="130" x2="185" y2="200" stroke="#2EBD85" stroke-width="1.3"/><rect x="179" y="138" width="12" height="55" fill="#2EBD85"/>
+        <line x1="210" y1="70" x2="210" y2="180" stroke="#2EBD85" stroke-width="1.3"/><rect x="204" y="80" width="12" height="95" fill="#2EBD85"/>
+        <line x1="90" y1="66" x2="260" y2="66" stroke="#F6465D" stroke-dasharray="4 3"/>
+        <text x="264" y="70" font-size="11" fill="#F6465D" font-family="sans-serif">SL ✂</text>
+        <text x="170" y="228" font-size="11.5" fill="#8CA0B4" text-anchor="middle" font-family="sans-serif">El sweep + inversión saca el stop</text>
+
+        <text x="510" y="36" font-size="13" font-weight="600" fill="#2EBD85" text-anchor="middle" font-family="sans-serif">✓ Setup E aplicado</text>
+        <rect x="400" y="90" width="220" height="24" rx="4" fill="#2EBD85" opacity="0.16"/>
+        <line x1="460" y1="110" x2="460" y2="160" stroke="#2EBD85" stroke-width="1.4"/><rect x="454" y="118" width="12" height="35" fill="#2EBD85"/>
+        <circle cx="460" cy="155" r="11" fill="none" stroke="#E8B54B" stroke-width="1.8"/>
+        <text x="400" y="182" font-size="11" fill="#E8B54B" font-family="sans-serif">1. espera el sweep</text>
+        <line x1="490" y1="60" x2="490" y2="120" stroke="#2EBD85" stroke-width="1.3"/><rect x="484" y="68" width="12" height="52" fill="#2EBD85"/>
+        <text x="500" y="56" font-size="11" fill="#2EBD85" font-family="sans-serif">2. cierre sobre FVG</text>
+        <line x1="540" y1="72" x2="540" y2="115" stroke="#F6465D" stroke-width="1.3"/><rect x="534" y="78" width="12" height="30" fill="#F6465D"/>
+        <line x1="565" y1="82" x2="565" y2="120" stroke="#2EBD85" stroke-width="1.3"/><rect x="559" y="88" width="12" height="24" fill="#2EBD85"/>
+        <circle cx="565" cy="100" r="13" fill="none" stroke="#5AA7E8" stroke-width="1.8"/>
+        <text x="580" y="130" font-size="11" fill="#5AA7E8" font-family="sans-serif">3. LONG en retest IFVG</text>
+      </svg>
+      <div class="figcap">FIG 14 — Caso 6: la misma estructura, operada mal (izquierda) y bajo el Setup E (derecha). La diferencia es esperar la confirmación del segundo barrido antes de decidir dirección.</div>
+    </div>
+    <p><strong>Categoría de error:</strong> contexto — no se clasificó el FVG como Escenario A/B antes de operar (banderas rojas: ubicación al final de movimiento extendido + liquidez residual bajo el mínimo).</p>
+    <p><strong>Regla nueva:</strong> antes de operar cualquier retest de FVG, contar las banderas rojas de la Sección 07 (Setup E). Con 2 o más activas, la continuación queda prohibida — solo se permite operar tras confirmar la inversión.</p>
+  </div>
+
+  <h3>Protocolo de revisión de pérdidas</h3>
+  <p>Cada pérdida entra a este registro respondiendo, en orden:</p>
+  <ol class="steps">
+    <li><strong>¿Qué "confirmación" leí?</strong> Nombrar exactamente qué vi que me hizo entrar.</li>
+    <li><strong>¿Qué elemento del núcleo faltaba o leí mal?</strong> Rechazo con cuerpo, ruptura estructural, evidencia, ubicación o R:R.</li>
+    <li><strong>¿En cuál de los 4 setups creía estar?</strong> Si no encaja en ninguno, el error fue operar fuera del sistema, no el mercado.</li>
+    <li><strong>¿Qué regla nueva o refuerzo sale de aquí?</strong> Redactarla en una frase y agregarla a este apartado.</li>
+  </ol>
+  <div class="card gold">
+    <h4 class="g">Por qué este apartado existe</h4>
+    <p>Los cinco casos de arriba comparten un patrón: en todos, la señal <em>parecía</em> suficiente en el momento.
+    El objetivo de este registro es que la próxima vez que algo "parezca suficiente", la memoria de estos
+    casos dispare la pregunta correcta: <strong>¿esto es confirmación, o es la forma de una confirmación en el
+    lugar equivocado?</strong></p>
+  </div>
+</section>
+
+</div>
+<!-- fin tab-lecciones -->
+
+<!-- ===================================================== -->
+<!-- TAB 6 · CHECKLIST                                      -->
+<!-- ===================================================== -->
+<div id="tab-checklist" class="tabpanel">
+
+<!-- ============ 16. CHECKLIST ============ -->
+<section id="checklist">
+  <div class="eyebrow">Sección 17</div>
+  <h2>Checklist pre-entrada (imprimible)</h2>
+  <ul class="check">
+    <li>4H tiene sesgo claro (no rango) y el trade va a favor de ese sesgo</li>
+    <li>Zona 1H identificada: FVG/IFVG + al menos una confluencia (S/R, Fibo 50–61.8%, POC/HVN, liquidez)</li>
+    <li>No hay FVGs apilados señalando entorno errático</li>
+    <li>Banderas rojas de contexto contadas (Sección 07): ubicación al final de movimiento extendido / liquidez residual justo debajo-encima / llegada con impulso fuerte — con 2 o más, solo se opera el Setup E, nunca la continuación</li>
+    <li>El precio LLEGÓ a la zona (CE o borde cercano) — no estoy anticipando ni persiguiendo</li>
+    <li>Núcleo 1: vela de rechazo con cuerpo ≥ 60–70% cerrada a favor</li>
+    <li>Núcleo 2: CHoCH/BOS menor con cierre de cuerpo</li>
+    <li>Evidencia (mínimo una): sweep con mecha / volumen sobre promedio / nuevo FVG del impulso</li>
+    <li>El setup encaja en una de las 5 combinaciones (A, B, C, D o E) — si no encaja, no existe</li>
+    <li>La entrada NO está pegada a la primera liquidez (no compro contra máximos iguales)</li>
+    <li>R:R ≥ 1:1.5 hacia TP1</li>
+    <li>SL detrás del swing de confirmación, no en el borde de la zona</li>
+    <li>Sin noticia de alto impacto inminente, o ya cerró la vela de 15M posterior</li>
+    <li>La vela de 15M que evalúo está CERRADA</li>
+  </ul>
+  <div class="card gold">
+    <h4 class="g">Recordatorio final</h4>
+    <p style="color:var(--text);font-weight:600;font-size:16px">Retest → Confirmación → Seguimiento → entra al mercado.</p>
+    <p>Un solo elemento ausente ha sido, históricamente, la diferencia entre una entrada de alta
+    confluencia y una pérdida evitable. Si el precio se fue sin dar la entrada, no operar fue lo correcto.
+    <strong>La paciencia es una posición.</strong></p>
+  </div>
+</section>
+
+</div>
+<!-- fin tab-checklist -->
+
+<footer>
+  <p class="mono">ESTRATEGIA IFVG · EURUSD / XAUUSD / SP500 · 4H → 1H → 15M · Metodología ICT + análisis técnico clásico.<br>
+  Documento de referencia personal de William · v3.2 (16-JUL-2026) · Actualizar tras cada revisión de trades.</p>
+</footer>
+
+</div>
+<script>
+  function showTab(id, btn){
+    document.querySelectorAll('.tabpanel').forEach(function(p){ p.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.tabnav button').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+</script>
+</body>
+</html>
