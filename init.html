@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Estrategia IFVG · Manual Operativo de William · v3.2</title>
+    <title>Estrategia IFVG · Manual Operativo de William · v3.5</title>
     <style>
       :root {
         --bg: #0e141b;
@@ -401,8 +401,9 @@
           confirmación, y cómo gestionar cada trade.
         </p>
         <span class="vtag"
-          >v3.3 · actualizado 21 JUL 2026 · + secuencia CE/1H-15M aclarada +
-          principio de invalidación de FVG</span
+          >v3.5 · actualizado 26 JUL 2026 · + Sección 18: mapa de setups,
+          detalle de banderas rojas, escala de exigencia y reglas de SL/TP por
+          setup</span
         >
       </header>
 
@@ -419,6 +420,9 @@
         <button onclick="showTab('tab-gestion', this)">13–15 · Gestión</button>
         <button onclick="showTab('tab-lecciones', this)">16 · Lecciones</button>
         <button onclick="showTab('tab-checklist', this)">17 · Checklist</button>
+        <button onclick="showTab('tab-setups', this)">
+          18 · Mapa de setups
+        </button>
       </nav>
 
       <!-- ===================================================== -->
@@ -5406,11 +5410,2451 @@
       </div>
       <!-- fin tab-checklist -->
 
+      <!-- ===================================================== -->
+      <!-- TAB 7 · MAPA DE SETUPS                                 -->
+      <!-- ===================================================== -->
+      <div id="tab-setups" class="tabpanel">
+        <!-- ============ 18. MAPA OPERATIVO ============ -->
+        <section id="mapa-setups">
+          <div class="eyebrow">Sección 18</div>
+          <h2>Mapa operativo: de la zona al gatillo</h2>
+          <p>
+            Esta sección no introduce reglas nuevas. Ordena las que ya están en
+            las Secciones 05 a 08 en una sola secuencia de decisión, porque el
+            error práctico no suele ser desconocer la regla — es aplicarla en el
+            orden equivocado, o elegir el setup después de haber decidido ya que
+            quieres entrar.
+          </p>
+          <p>
+            Un setup no se <em>escoge</em>: se <strong>llega</strong> a él. Tres
+            compuertas en orden fijo determinan cuál está disponible, y las tres
+            se evalúan antes de mirar el gatillo.
+          </p>
+
+          <div class="fig">
+            <svg
+              viewBox="0 0 680 450"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+            >
+              <title>Router de decisión entre setups</title>
+              <defs>
+                <marker
+                  id="arw18a"
+                  viewBox="0 0 10 10"
+                  refX="8"
+                  refY="5"
+                  markerWidth="6"
+                  markerHeight="6"
+                  orient="auto-start-reverse"
+                >
+                  <path
+                    d="M1 1L8 5L1 9"
+                    fill="none"
+                    stroke="#5F7387"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </marker>
+              </defs>
+
+              <rect
+                x="210"
+                y="20"
+                width="260"
+                height="54"
+                rx="10"
+                fill="#1A2430"
+                stroke="#26364A"
+              />
+              <text
+                x="340"
+                y="43"
+                font-size="13.5"
+                font-weight="700"
+                fill="#D9E1EA"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Compuerta 1 · 4H
+              </text>
+              <text
+                x="340"
+                y="61"
+                font-size="11.5"
+                fill="#8CA0B4"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Sesgo macro: a favor o en contra
+              </text>
+
+              <line
+                x1="340"
+                y1="74"
+                x2="340"
+                y2="100"
+                stroke="#5F7387"
+                stroke-width="1"
+                marker-end="url(#arw18a)"
+              />
+
+              <rect
+                x="190"
+                y="104"
+                width="300"
+                height="54"
+                rx="10"
+                fill="#1A2430"
+                stroke="#26364A"
+              />
+              <text
+                x="340"
+                y="127"
+                font-size="13.5"
+                font-weight="700"
+                fill="#D9E1EA"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Compuerta 2 · 1H
+              </text>
+              <text
+                x="340"
+                y="145"
+                font-size="11.5"
+                fill="#8CA0B4"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Contar banderas rojas de la zona
+              </text>
+
+              <path
+                d="M340 158 L340 172 L130 172 L130 182"
+                fill="none"
+                stroke="#5F7387"
+                stroke-width="1"
+                marker-end="url(#arw18a)"
+              />
+              <path
+                d="M340 158 L340 182"
+                fill="none"
+                stroke="#5F7387"
+                stroke-width="1"
+                marker-end="url(#arw18a)"
+              />
+              <path
+                d="M340 158 L340 172 L550 172 L550 182"
+                fill="none"
+                stroke="#5F7387"
+                stroke-width="1"
+                marker-end="url(#arw18a)"
+              />
+
+              <rect
+                x="40"
+                y="188"
+                width="180"
+                height="58"
+                rx="10"
+                fill="#10352A"
+                stroke="#2EBD85"
+              />
+              <text
+                x="130"
+                y="211"
+                font-size="13"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                0 banderas
+              </text>
+              <text
+                x="130"
+                y="229"
+                font-size="11.5"
+                fill="#8FB5AB"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Continuación probable
+              </text>
+
+              <rect
+                x="250"
+                y="188"
+                width="180"
+                height="58"
+                rx="10"
+                fill="#3A2E12"
+                stroke="#E8B54B"
+              />
+              <text
+                x="340"
+                y="211"
+                font-size="13"
+                font-weight="700"
+                fill="#E8B54B"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                1 bandera
+              </text>
+              <text
+                x="340"
+                y="229"
+                font-size="11.5"
+                fill="#C9AE7A"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Exigencia total, sin rebajas
+              </text>
+
+              <rect
+                x="460"
+                y="188"
+                width="180"
+                height="58"
+                rx="10"
+                fill="#3A1720"
+                stroke="#F6465D"
+              />
+              <text
+                x="550"
+                y="211"
+                font-size="13"
+                font-weight="700"
+                fill="#F6465D"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                2–3 banderas
+              </text>
+              <text
+                x="550"
+                y="229"
+                font-size="11.5"
+                fill="#C98A94"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Continuación prohibida
+              </text>
+
+              <line
+                x1="130"
+                y1="246"
+                x2="130"
+                y2="266"
+                stroke="#5F7387"
+                stroke-width="1"
+                marker-end="url(#arw18a)"
+              />
+              <line
+                x1="340"
+                y1="246"
+                x2="340"
+                y2="266"
+                stroke="#5F7387"
+                stroke-width="1"
+                marker-end="url(#arw18a)"
+              />
+              <line
+                x1="550"
+                y1="246"
+                x2="550"
+                y2="266"
+                stroke="#5F7387"
+                stroke-width="1"
+                marker-end="url(#arw18a)"
+              />
+
+              <rect
+                x="40"
+                y="272"
+                width="390"
+                height="58"
+                rx="10"
+                fill="#152C24"
+                stroke="#1E5C46"
+              />
+              <text
+                x="235"
+                y="295"
+                font-size="13"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Setups A · B · C · D disponibles
+              </text>
+              <text
+                x="235"
+                y="313"
+                font-size="11.5"
+                fill="#8FB5AB"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                El 15M decide cuál, no tú
+              </text>
+
+              <rect
+                x="460"
+                y="272"
+                width="180"
+                height="58"
+                rx="10"
+                fill="#2E1A20"
+                stroke="#6B2530"
+              />
+              <text
+                x="550"
+                y="295"
+                font-size="13"
+                font-weight="700"
+                fill="#F6465D"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Solo Setup E
+              </text>
+              <text
+                x="550"
+                y="313"
+                font-size="11.5"
+                fill="#C98A94"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Esperar la inversión
+              </text>
+
+              <path
+                d="M235 330 L235 344 L300 344 L300 352"
+                fill="none"
+                stroke="#5F7387"
+                stroke-width="1"
+                marker-end="url(#arw18a)"
+              />
+              <path
+                d="M550 330 L550 344 L410 344 L410 352"
+                fill="none"
+                stroke="#5F7387"
+                stroke-width="1"
+                marker-end="url(#arw18a)"
+              />
+
+              <rect
+                x="190"
+                y="356"
+                width="300"
+                height="58"
+                rx="10"
+                fill="#1A2430"
+                stroke="#26364A"
+              />
+              <text
+                x="340"
+                y="379"
+                font-size="13.5"
+                font-weight="700"
+                fill="#D9E1EA"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Compuerta 3 · 15M
+              </text>
+              <text
+                x="340"
+                y="397"
+                font-size="11.5"
+                fill="#8CA0B4"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Núcleo + 1 evidencia + R:R ≥ 1:1.5
+              </text>
+            </svg>
+            <div class="figcap">
+              FIG 18.1 — Las tres compuertas. La compuerta 2 no decide si
+              entras: decide <em>qué familia de setups tienes permitida</em>.
+              Solo la compuerta 3 autoriza la entrada.
+            </div>
+          </div>
+
+          <div class="card gold">
+            <h4 class="g">La regla que ordena todo lo demás</h4>
+            <p>
+              El conteo de banderas rojas en 1H es lo que separa el universo en
+              dos: <strong>continuación</strong> (A, B, C, D) o
+              <strong>inversión</strong> (E). Si cuentas las banderas
+              <em>después</em> de ver una confirmación bonita en 15M, ya
+              perdiste — vas a racionalizar el conteo hacia el lado que quieres.
+              Cuéntalas en 1H, escríbelas, y recién entonces baja.
+            </p>
+          </div>
+        </section>
+
+        <!-- ============ BANDERAS ROJAS ============ -->
+        <section id="banderas-rojas">
+          <div class="eyebrow">Compuerta 2 · detalle</div>
+          <h2>Las tres banderas rojas</h2>
+          <p>
+            Son tres, siempre las mismas, y son propiedades de la zona en
+            <strong>1H</strong> — no de la vela en 15M. Se evalúan mirando el
+            gráfico de 1H antes de bajar, y el resultado es un número del 0 al 3
+            que decide cuánta evidencia le vas a exigir a la confirmación.
+          </p>
+
+          <div class="fig">
+            <svg
+              viewBox="0 0 680 250"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+            >
+              <title>Las tres banderas rojas de contexto en 1H</title>
+              <text
+                x="130"
+                y="36"
+                font-size="12.5"
+                font-weight="700"
+                fill="#F6465D"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                1 · Ubicación
+              </text>
+              <path
+                d="M45 200 L75 160 L90 175 L120 135 L135 150 L165 110 L180 122 L205 92"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <rect
+                x="150"
+                y="82"
+                width="70"
+                height="24"
+                rx="3"
+                fill="#F6465D"
+                opacity="0.18"
+              />
+              <rect
+                x="150"
+                y="82"
+                width="70"
+                height="24"
+                rx="3"
+                fill="none"
+                stroke="#F6465D"
+                opacity="0.5"
+              />
+              <text
+                x="130"
+                y="228"
+                font-size="10.5"
+                fill="#8CA0B4"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                FVG al final de 3+ impulsos
+              </text>
+
+              <text
+                x="340"
+                y="36"
+                font-size="12.5"
+                font-weight="700"
+                fill="#F6465D"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                2 · Liquidez residual
+              </text>
+              <rect
+                x="260"
+                y="118"
+                width="160"
+                height="30"
+                rx="3"
+                fill="#2EBD85"
+                opacity="0.12"
+              />
+              <rect
+                x="260"
+                y="118"
+                width="160"
+                height="30"
+                rx="3"
+                fill="none"
+                stroke="#2EBD85"
+                opacity="0.4"
+              />
+              <line
+                x1="258"
+                y1="180"
+                x2="422"
+                y2="180"
+                stroke="#F6465D"
+                stroke-width="1"
+                stroke-dasharray="4 3"
+              />
+              <circle cx="300" cy="180" r="3.5" fill="#F6465D" />
+              <circle cx="365" cy="180" r="3.5" fill="#F6465D" />
+              <path
+                d="M266 66 L300 108 L340 132"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <text
+                x="340"
+                y="228"
+                font-size="10.5"
+                fill="#8CA0B4"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Mínimos iguales justo debajo
+              </text>
+
+              <text
+                x="550"
+                y="36"
+                font-size="12.5"
+                font-weight="700"
+                fill="#F6465D"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                3 · Forma de llegada
+              </text>
+              <rect
+                x="470"
+                y="140"
+                width="160"
+                height="30"
+                rx="3"
+                fill="#2EBD85"
+                opacity="0.12"
+              />
+              <rect
+                x="470"
+                y="140"
+                width="160"
+                height="30"
+                rx="3"
+                fill="none"
+                stroke="#2EBD85"
+                opacity="0.4"
+              />
+              <line
+                x1="512"
+                y1="62"
+                x2="512"
+                y2="112"
+                stroke="#F6465D"
+                stroke-width="1.2"
+              />
+              <rect
+                x="505"
+                y="68"
+                width="14"
+                height="38"
+                fill="#F6465D"
+                opacity="0.85"
+              />
+              <line
+                x1="547"
+                y1="98"
+                x2="547"
+                y2="146"
+                stroke="#F6465D"
+                stroke-width="1.2"
+              />
+              <rect
+                x="540"
+                y="104"
+                width="14"
+                height="36"
+                fill="#F6465D"
+                opacity="0.85"
+              />
+              <line
+                x1="582"
+                y1="132"
+                x2="582"
+                y2="172"
+                stroke="#F6465D"
+                stroke-width="1.2"
+              />
+              <rect
+                x="575"
+                y="138"
+                width="14"
+                height="28"
+                fill="#F6465D"
+                opacity="0.85"
+              />
+              <text
+                x="550"
+                y="228"
+                font-size="10.5"
+                fill="#8CA0B4"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Cuerpos dominantes hacia la zona
+              </text>
+            </svg>
+            <div class="figcap">
+              FIG 18.2 — Las tres banderas. Cada una vale exactamente 1 punto:
+              está o no está. No hay medias banderas.
+            </div>
+          </div>
+
+          <table>
+            <tr>
+              <th>Bandera</th>
+              <th>Pregunta exacta</th>
+              <th>Cuenta si…</th>
+            </tr>
+            <tr>
+              <td>1 · Ubicación</td>
+              <td>
+                ¿El FVG está al final de un movimiento ya extendido (3 o más
+                impulsos), o va contra la estructura de 4H?
+              </td>
+              <td class="no">Sí a cualquiera de las dos</td>
+            </tr>
+            <tr>
+              <td>2 · Liquidez residual</td>
+              <td>
+                ¿Hay un mínimo/máximo igual u obvio justo por debajo o por
+                encima de la zona, sin tomar?
+              </td>
+              <td class="no">Existe y está sin barrer</td>
+            </tr>
+            <tr>
+              <td>3 · Forma de llegada</td>
+              <td>
+                ¿El precio llega a la zona con cuerpos dominantes, o con velas
+                lentas y pequeñas?
+              </td>
+              <td class="no">Llega con impulso fuerte</td>
+            </tr>
+          </table>
+
+          <div class="card red">
+            <h4 class="r">Corrección: 2–3 banderas no significa "no entro"</h4>
+            <p>
+              Significa que <strong>la continuación queda prohibida</strong> y
+              que el único setup permitido es el E. Sigues operando — pero del
+              otro lado, y solo después de que el barrido y el cierre de cuerpo
+              inviertan la zona. Confundir "prohibida la continuación" con "no
+              hay trade" tiene un costo silencioso: dejas pasar precisamente el
+              escenario donde el mercado te está diciendo con más claridad hacia
+              dónde va.
+            </p>
+          </div>
+
+          <h3>Escala de exigencia</h3>
+          <table>
+            <tr>
+              <th>Banderas</th>
+              <th>Qué le exiges a la confirmación en 15M</th>
+              <th>Setups abiertos</th>
+            </tr>
+            <tr>
+              <td class="ok">0</td>
+              <td>
+                Mínimo del checklist:
+                <strong>núcleo (los 2) + 1 evidencia</strong>
+              </td>
+              <td class="ok">A · B · C · D</td>
+            </tr>
+            <tr>
+              <td class="mid">1</td>
+              <td>
+                Checklist completo:
+                <strong>núcleo (los 2) + 2 evidencias</strong>, y ningún ítem de
+                la Sección 17 se da por bueno "casi"
+              </td>
+              <td class="mid">A · C · D (B queda fuera)</td>
+            </tr>
+            <tr>
+              <td class="no">2–3</td>
+              <td>
+                Núcleo + barrido de la liquidez residual + cierre de cuerpo que
+                invierte la zona + CHoCH interno
+              </td>
+              <td class="no">Solo E</td>
+            </tr>
+          </table>
+
+          <div class="card gold">
+            <h4 class="g">
+              Dos cosas que tu manual no definía y aquí quedan fijadas
+            </h4>
+            <p>
+              <strong>Qué es "checklist completo".</strong> Las Secciones 05 y
+              07 distinguen "mínimo del checklist" de "checklist completo" pero
+              nunca dicen en qué se diferencian. La lectura que se adopta aquí:
+              el mínimo es núcleo + 1 evidencia, y el completo es núcleo +
+              <strong>2 de las 3</strong> evidencias. No las tres: exigir 3/3
+              convertiría 1 bandera en un no-trade de hecho, y eso borraría la
+              diferencia que el propio manual establece entre 1 y 2–3 banderas.
+              Con 2 de 3 la escala mantiene su gradiente.
+            </p>
+            <p>
+              <strong>Con 1 bandera, B queda fuera.</strong> El Setup B se apoya
+              en un solo elemento — el desplazamiento — y ya nace sin barrido.
+              Pedirle 2 evidencias cuando una bandera roja advierte que el
+              contexto es dudoso es pedirle algo que estructuralmente no puede
+              dar. Con 1 bandera se opera A, C o D; con 0, los cuatro.
+            </p>
+          </div>
+        </section>
+
+        <!-- ============ SETUP A ============ -->
+        <section id="setup-a-detalle">
+          <div class="eyebrow">Setup A</div>
+          <h2>Secuencia de libro</h2>
+          <p>
+            La única variante que justifica tamaño completo sin condiciones. Los
+            cuatro elementos deben aparecer <strong>en orden</strong>: barrido →
+            rechazo → volumen → CHoCH. Si aparecen desordenados, no es A.
+          </p>
+
+          <div class="fig">
+            <svg
+              viewBox="0 0 680 400"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+            >
+              <title>Anatomía del Setup A</title>
+              <rect
+                x="140"
+                y="170"
+                width="500"
+                height="60"
+                rx="3"
+                fill="#2EBD85"
+                opacity="0.10"
+              />
+              <rect
+                x="140"
+                y="170"
+                width="500"
+                height="60"
+                rx="3"
+                fill="none"
+                stroke="#2EBD85"
+                opacity="0.35"
+              />
+              <line
+                x1="140"
+                y1="200"
+                x2="640"
+                y2="200"
+                stroke="#E8B54B"
+                stroke-width="1"
+                stroke-dasharray="5 4"
+              />
+              <line
+                x1="140"
+                y1="140"
+                x2="640"
+                y2="140"
+                stroke="#8CA0B4"
+                stroke-width="1"
+                stroke-dasharray="3 3"
+              />
+              <line
+                x1="140"
+                y1="252"
+                x2="640"
+                y2="252"
+                stroke="#8CA0B4"
+                stroke-width="1"
+                stroke-dasharray="3 3"
+              />
+
+              <text
+                x="46"
+                y="144"
+                font-size="11.5"
+                fill="#8CA0B4"
+                font-family="sans-serif"
+              >
+                Máx. menor
+              </text>
+              <text
+                x="46"
+                y="166"
+                font-size="11.5"
+                fill="#2EBD85"
+                font-family="sans-serif"
+              >
+                FVG 1H
+              </text>
+              <text
+                x="46"
+                y="204"
+                font-size="11.5"
+                fill="#E8B54B"
+                font-family="sans-serif"
+              >
+                CE
+              </text>
+              <text
+                x="46"
+                y="256"
+                font-size="11.5"
+                fill="#8CA0B4"
+                font-family="sans-serif"
+              >
+                Mín. menor
+              </text>
+
+              <path
+                d="M155 95 L195 135 L230 258 L262 180 L295 140 L322 196"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+
+              <line
+                x1="351"
+                y1="186"
+                x2="351"
+                y2="244"
+                stroke="#F6465D"
+                stroke-width="1.2"
+              />
+              <rect
+                x="340"
+                y="192"
+                width="22"
+                height="48"
+                fill="#F6465D"
+                opacity="0.85"
+              />
+
+              <line
+                x1="401"
+                y1="190"
+                x2="401"
+                y2="268"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <rect x="390" y="196" width="22" height="54" fill="#2EBD85" />
+
+              <line
+                x1="451"
+                y1="126"
+                x2="451"
+                y2="200"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <rect x="440" y="132" width="22" height="64" fill="#2EBD85" />
+
+              <line
+                x1="501"
+                y1="100"
+                x2="501"
+                y2="136"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <rect x="490" y="106" width="22" height="28" fill="#2EBD85" />
+
+              <line
+                x1="336"
+                y1="344"
+                x2="530"
+                y2="344"
+                stroke="#8CA0B4"
+                stroke-width="1"
+                stroke-dasharray="4 3"
+              />
+              <text
+                x="272"
+                y="348"
+                font-size="11"
+                fill="#5F7387"
+                font-family="sans-serif"
+              >
+                media
+              </text>
+              <rect x="340" y="352" width="22" height="20" fill="#26364A" />
+              <rect
+                x="390"
+                y="324"
+                width="22"
+                height="48"
+                fill="#2EBD85"
+                opacity="0.7"
+              />
+              <rect x="440" y="338" width="22" height="34" fill="#26364A" />
+              <rect x="490" y="354" width="22" height="18" fill="#26364A" />
+
+              <circle
+                cx="373"
+                cy="276"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="373"
+                y="280"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                1
+              </text>
+              <circle
+                cx="375"
+                cy="212"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="375"
+                y="216"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                2
+              </text>
+              <circle
+                cx="375"
+                cy="330"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="375"
+                y="334"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                3
+              </text>
+              <circle
+                cx="425"
+                cy="140"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="425"
+                y="144"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                4
+              </text>
+
+              <line
+                x1="518"
+                y1="132"
+                x2="552"
+                y2="132"
+                stroke="#2EBD85"
+                stroke-width="1.4"
+              />
+              <text
+                x="556"
+                y="136"
+                font-size="11.5"
+                fill="#2EBD85"
+                font-family="sans-serif"
+              >
+                Entrada
+              </text>
+              <line
+                x1="518"
+                y1="276"
+                x2="552"
+                y2="276"
+                stroke="#F6465D"
+                stroke-width="1.4"
+              />
+              <text
+                x="556"
+                y="280"
+                font-size="11.5"
+                fill="#F6465D"
+                font-family="sans-serif"
+              >
+                SL
+              </text>
+            </svg>
+            <div class="figcap">
+              FIG 18.3 — Setup A alcista. ① mecha barre el mínimo menor · ②
+              cuerpo dominante cierra sobre el CE · ③ volumen sobre la media en
+              esa misma vela · ④ CHoCH por cierre de cuerpo sobre el máximo
+              menor. El espejo bajista es idéntico invertido.
+            </div>
+          </div>
+
+          <h3>Paso a paso</h3>
+          <ol class="steps">
+            <li>
+              Confirma que la mecha <strong>barrió</strong> el mínimo/máximo
+              menor previo a la zona. Sin barrido no es A — evalúa B antes de
+              forzarlo.
+            </li>
+            <li>
+              Espera el <strong>cierre</strong> de la vela de rechazo. Cuerpo ≥
+              60–70% del rango total y cierre del cuerpo al otro lado del CE.
+              Vela abierta no cuenta como nada.
+            </li>
+            <li>
+              Verifica el volumen de <em>esa misma vela</em>: por encima de la
+              media reciente. En EURUSD y XAUUSD es tick volume del bróker —
+              vale como evidencia secundaria, nunca como la única.
+            </li>
+            <li>
+              Espera el <strong>CHoCH</strong>: cierre de cuerpo rompiendo el
+              extremo menor de la corrección. Esta es la señal de entrada, no
+              las anteriores.
+            </li>
+            <li>
+              SL detrás de la mecha del barrido + buffer. TP1 en la primera
+              liquidez, mover a breakeven. Si el R:R hasta TP1 queda por debajo
+              de 1:1.5, la confirmación es válida pero el trade no.
+            </li>
+          </ol>
+
+          <div class="card gold">
+            <h4 class="g">SL y TP — Setup A</h4>
+            <ul>
+              <li>
+                <strong>SL:</strong> detrás de la mecha del barrido del paso 1,
+                más buffer. Ese es el nivel que invalida el setup: si el precio
+                vuelve ahí, el barrido no fue barrido.
+              </li>
+              <li>
+                <strong>Buffer:</strong> amplio en XAUUSD (las mechas son
+                violentas), ajustado en EURUSD. El buffer no es un número fijo,
+                es una función del instrumento.
+              </li>
+              <li>
+                <strong>TP1:</strong> primera liquidez opuesta marcada en 1H.
+                Parcial + SL a breakeven.
+              </li>
+              <li>
+                <strong>TP2:</strong> siguiente pool de liquidez, filtrado con
+                volume profile — <em>antes</em> de un HVN grueso, nunca después.
+                Alternativa: extensión Fibo 1.272–1.618.
+              </li>
+              <li>
+                <strong>Filtro:</strong> R:R ≥ 1:1.5 hasta TP1 o no se toma,
+                aunque los cuatro elementos estén.
+              </li>
+            </ul>
+          </div>
+
+          <div class="card red">
+            <h4 class="r">Descartar de inmediato si…</h4>
+            <ul>
+              <li>
+                El precio entra a la zona y consolida lateral 3 o más velas sin
+                barrido ni rechazo. Está <strong>masticando</strong> la zona:
+                condición de no-trade, no de paciencia.
+              </li>
+              <li>
+                El cuerpo de la vela de rechazo es menor al 60% del rango, o
+                cierra del lado equivocado del CE.
+              </li>
+              <li>
+                El CHoCH ocurre solo con mecha. Sin cierre de cuerpo no hay
+                cambio de carácter, hay ruido.
+              </li>
+              <li>
+                Los elementos aparecen desordenados (CHoCH antes del barrido,
+                por ejemplo). El orden es parte de la definición.
+              </li>
+              <li>R:R hasta la primera liquidez por debajo de 1:1.5.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ============ SETUP B ============ -->
+        <section id="setup-b-detalle">
+          <div class="eyebrow">Setup B</div>
+          <h2>Desplazamiento sin barrido</h2>
+          <p>
+            El retest es superficial: respeta el CE y no barre nada. Lo que
+            valida el setup no es el toque, sino la
+            <strong>salida</strong> — un desplazamiento tan violento que no dejó
+            espacio para barrer. La lectura es que la demanda apareció antes de
+            lo previsto.
+          </p>
+
+          <div class="fig">
+            <svg
+              viewBox="0 0 680 250"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+            >
+              <title>Anatomía del Setup B</title>
+              <rect
+                x="140"
+                y="160"
+                width="500"
+                height="52"
+                rx="3"
+                fill="#2EBD85"
+                opacity="0.10"
+              />
+              <rect
+                x="140"
+                y="160"
+                width="500"
+                height="52"
+                rx="3"
+                fill="none"
+                stroke="#2EBD85"
+                opacity="0.35"
+              />
+              <line
+                x1="140"
+                y1="186"
+                x2="640"
+                y2="186"
+                stroke="#E8B54B"
+                stroke-width="1"
+                stroke-dasharray="5 4"
+              />
+              <text
+                x="46"
+                y="156"
+                font-size="11.5"
+                fill="#2EBD85"
+                font-family="sans-serif"
+              >
+                FVG 1H
+              </text>
+              <text
+                x="46"
+                y="190"
+                font-size="11.5"
+                fill="#E8B54B"
+                font-family="sans-serif"
+              >
+                CE
+              </text>
+
+              <rect
+                x="262"
+                y="112"
+                width="378"
+                height="34"
+                rx="3"
+                fill="#E8B54B"
+                opacity="0.13"
+              />
+              <rect
+                x="262"
+                y="112"
+                width="378"
+                height="34"
+                rx="3"
+                fill="none"
+                stroke="#E8B54B"
+                opacity="0.4"
+              />
+              <text
+                x="470"
+                y="106"
+                font-size="11.5"
+                fill="#E8B54B"
+                font-family="sans-serif"
+              >
+                Nuevo FVG — aquí se entra
+              </text>
+
+              <path
+                d="M155 70 L200 110 L245 184"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+
+              <line
+                x1="274"
+                y1="84"
+                x2="274"
+                y2="190"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <rect x="262" y="90" width="24" height="98" fill="#2EBD85" />
+              <line
+                x1="310"
+                y1="78"
+                x2="310"
+                y2="96"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <rect x="300" y="82" width="20" height="12" fill="#2EBD85" />
+
+              <path
+                d="M320 88 L360 100 L400 128 L440 118 L490 70 L540 46"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <circle cx="400" cy="128" r="5.5" fill="#2EBD85" />
+
+              <circle
+                cx="240"
+                cy="140"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="240"
+                y="144"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                1
+              </text>
+              <circle
+                cx="610"
+                cy="129"
+                r="11"
+                fill="#0E141B"
+                stroke="#E8B54B"
+                stroke-width="1.2"
+              />
+              <text
+                x="610"
+                y="133"
+                font-size="11"
+                font-weight="700"
+                fill="#E8B54B"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                2
+              </text>
+              <line
+                x1="400"
+                y1="157"
+                x2="400"
+                y2="136"
+                stroke="#2EBD85"
+                stroke-width="1"
+                stroke-dasharray="3 3"
+              />
+              <circle
+                cx="400"
+                cy="168"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="400"
+                y="172"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                3
+              </text>
+            </svg>
+            <div class="figcap">
+              FIG 18.4 — ① desplazamiento inequívoco desde el CE, sin barrer · ②
+              el impulso deja un FVG nuevo · ③ la entrada es el retest de
+              <em>ese</em> FVG nuevo, no la vela grande.
+            </div>
+          </div>
+
+          <h3>Paso a paso</h3>
+          <ol class="steps">
+            <li>
+              Verifica que el retest fue superficial: tocó el CE y no barrió los
+              extremos. Antes de continuar, comprueba que no hay liquidez
+              residual obvia más allá de la zona — si la hay, el escenario real
+              es E y este setup es una trampa.
+            </li>
+            <li>
+              Espera el desplazamiento: una vela con cuerpo
+              <strong>claramente mayor</strong> que las diez anteriores. Si
+              tienes que compararla dos veces para decidir, no es inequívoca.
+            </li>
+            <li>
+              Confirma que ese desplazamiento rompió estructura con cierre de
+              cuerpo (BOS) y que dejó un <strong>FVG nuevo</strong> detrás.
+            </li>
+            <li>
+              Marca ese FVG nuevo y espera su retest.
+              <strong>No persigas la vela</strong> — entrar en el desplazamiento
+              es pagar el peor precio del movimiento.
+            </li>
+            <li>
+              Entrada en el retest del FVG nuevo. SL detrás del origen del
+              desplazamiento, R:R ≥ 1:1.5 hacia la primera liquidez.
+            </li>
+          </ol>
+
+          <div class="card gold">
+            <h4 class="g">SL y TP — Setup B</h4>
+            <ul>
+              <li>
+                <strong>SL:</strong> no hay barrido, así que no hay mecha donde
+                anclar. Va detrás del
+                <strong>origen del desplazamiento</strong> — el extremo desde el
+                que salió la vela grande.
+              </li>
+              <li>
+                <strong>Alternativa:</strong> detrás del borde lejano del FVG
+                nuevo, si eso queda más ajustado sin meterse en el ruido. Se
+                elige el más cercano de los dos que siga siendo válido.
+              </li>
+              <li>
+                <strong>Advertencia:</strong> el SL de B tiende a ser el más
+                ancho en pips porque la vela de desplazamiento es grande por
+                definición. Ajusta el <strong>tamaño</strong> para mantener
+                constante el riesgo en dinero, no en pips.
+              </li>
+              <li>
+                <strong>TP1 y TP2:</strong> igual que en A — primera liquidez en
+                1H, luego la siguiente filtrada con volume profile.
+              </li>
+            </ul>
+          </div>
+
+          <div class="card red">
+            <h4 class="r">Descartar de inmediato si…</h4>
+            <ul>
+              <li>
+                El desplazamiento <strong>no crea un FVG nuevo</strong>. Sin
+                ineficiencia nueva no hay zona de entrada definida, y perseguir
+                la vela no es una alternativa.
+              </li>
+              <li>
+                La vela no destaca contra las diez previas. Un impulso "normal"
+                no compensa la ausencia de barrido.
+              </li>
+              <li>
+                El precio no vuelve al FVG nuevo y sigue de largo. Se deja
+                pasar: este setup depende del retest.
+              </li>
+              <li>
+                Aparece liquidez residual obvia mientras esperas el retest. El
+                escenario cambió a E.
+              </li>
+              <li>
+                El sesgo de 4H está en contra. B queda prohibido a
+                contratendencia.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ============ SETUP C ============ -->
+        <section id="setup-c-detalle">
+          <div class="eyebrow">Setup C</div>
+          <h2>Barrido en temporalidad menor</h2>
+          <p>
+            El 15M no muestra nada concluyente: una mecha tocando la zona y poco
+            más. Pero al bajar a 5M la misma vela contiene un barrido de
+            estructura interna y su CHoCH. La evidencia es real, solo que de
+            menor grado — y eso tiene consecuencias sobre el tamaño.
+          </p>
+
+          <div class="fig">
+            <svg
+              viewBox="0 0 680 265"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+            >
+              <title>Setup C comparando 15M y 5M</title>
+              <text
+                x="185"
+                y="38"
+                font-size="12.5"
+                font-weight="700"
+                fill="#8CA0B4"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                15M — solo un toque
+              </text>
+              <text
+                x="505"
+                y="38"
+                font-size="12.5"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                5M — barrido + CHoCH
+              </text>
+              <line
+                x1="345"
+                y1="52"
+                x2="345"
+                y2="240"
+                stroke="#26364A"
+                stroke-width="1"
+                stroke-dasharray="4 4"
+              />
+
+              <rect
+                x="60"
+                y="120"
+                width="255"
+                height="46"
+                rx="3"
+                fill="#2EBD85"
+                opacity="0.10"
+              />
+              <rect
+                x="60"
+                y="120"
+                width="255"
+                height="46"
+                rx="3"
+                fill="none"
+                stroke="#2EBD85"
+                opacity="0.35"
+              />
+              <line
+                x1="60"
+                y1="143"
+                x2="315"
+                y2="143"
+                stroke="#E8B54B"
+                stroke-width="1"
+                stroke-dasharray="5 4"
+              />
+              <text
+                x="64"
+                y="114"
+                font-size="11"
+                fill="#2EBD85"
+                font-family="sans-serif"
+              >
+                FVG 1H
+              </text>
+              <path
+                d="M75 72 L120 105 L165 152 L215 112 L265 82 L308 62"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <text
+                x="185"
+                y="212"
+                font-size="11.5"
+                fill="#5F7387"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                Sin evidencia visible: no descartar todavía
+              </text>
+
+              <rect
+                x="380"
+                y="120"
+                width="250"
+                height="46"
+                rx="3"
+                fill="#2EBD85"
+                opacity="0.10"
+              />
+              <rect
+                x="380"
+                y="120"
+                width="250"
+                height="46"
+                rx="3"
+                fill="none"
+                stroke="#2EBD85"
+                opacity="0.35"
+              />
+              <line
+                x1="380"
+                y1="100"
+                x2="630"
+                y2="100"
+                stroke="#8CA0B4"
+                stroke-width="1"
+                stroke-dasharray="3 3"
+              />
+              <line
+                x1="380"
+                y1="180"
+                x2="630"
+                y2="180"
+                stroke="#8CA0B4"
+                stroke-width="1"
+                stroke-dasharray="3 3"
+              />
+              <text
+                x="384"
+                y="94"
+                font-size="11"
+                fill="#8CA0B4"
+                font-family="sans-serif"
+              >
+                Máx. interno
+              </text>
+              <text
+                x="384"
+                y="176"
+                font-size="11"
+                fill="#8CA0B4"
+                font-family="sans-serif"
+              >
+                Swing low interno
+              </text>
+              <path
+                d="M395 70 L425 130 L450 190 L470 150 L495 94 L525 118 L560 80 L600 55"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+
+              <circle
+                cx="450"
+                cy="208"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="450"
+                y="212"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                1
+              </text>
+              <circle
+                cx="533"
+                cy="88"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="533"
+                y="92"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                2
+              </text>
+              <text
+                x="400"
+                y="236"
+                font-size="11"
+                fill="#8CA0B4"
+                font-family="sans-serif"
+              >
+                SL detrás de la mecha de 5M · tamaño reducido
+              </text>
+            </svg>
+            <div class="figcap">
+              FIG 18.5 — La misma zona, dos resoluciones. ① barrido del swing
+              low interno en 5M · ② CHoCH por cierre de cuerpo sobre el máximo
+              interno. El SL es mucho más ajustado, pero también más cerca del
+              ruido.
+            </div>
+          </div>
+
+          <h3>Paso a paso</h3>
+          <ol class="steps">
+            <li>
+              En 15M ves solo un toque a la zona. No es un descarte todavía: es
+              la señal para bajar a 5M, no para salir del gráfico.
+            </li>
+            <li>
+              En 5M busca el <strong>barrido con mecha</strong> de un swing
+              low/high interno. Si no existe, no hay Setup C.
+            </li>
+            <li>
+              Busca el <strong>CHoCH en 5M</strong>: cierre de cuerpo rompiendo
+              la estructura menor. Los dos elementos, en ese orden.
+            </li>
+            <li>
+              Antes de entrar, mide el ruido normal del instrumento en 5M. En
+              XAUUSD un SL de 5M puede estar dentro de la oscilación habitual y
+              te saca sin que la tesis falle.
+            </li>
+            <li>
+              Entrada con SL detrás de la mecha del barrido en 5M y
+              <strong>tamaño reducido</strong> — la mitad del estándar. La
+              evidencia es real pero de menor grado, y el tamaño debe
+              reflejarlo.
+            </li>
+          </ol>
+
+          <div class="card gold">
+            <h4 class="g">SL y TP — Setup C</h4>
+            <ul>
+              <li>
+                <strong>SL:</strong> detrás de la mecha del barrido en
+                <strong>5M</strong>. Es el más ajustado de los cinco setups.
+              </li>
+              <li>
+                <strong>Verificación obligatoria:</strong> compara ese SL con el
+                rango medio de las últimas velas de 5M. Si el SL es menor que el
+                ruido normal del instrumento, el setup no es operable aunque la
+                lectura sea correcta.
+              </li>
+              <li>
+                <strong>TP:</strong> se sigue definiendo en <strong>1H</strong>.
+                Bajar de temporalidad para entrar no significa bajar de
+                temporalidad para apuntar — este es el error natural de este
+                setup.
+              </li>
+              <li>
+                <strong>Consecuencia:</strong> SL de 5M + TP de 1H da el mejor
+                R:R nominal de los cinco, y también la menor probabilidad de
+                recorrerlo entero. El tamaño reducido es lo que hace que ese
+                intercambio sea aceptable.
+              </li>
+            </ul>
+          </div>
+
+          <div class="card red">
+            <h4 class="r">Descartar de inmediato si…</h4>
+            <ul>
+              <li>
+                El sesgo de 4H está en contra. C es la variante más débil de las
+                cinco: <strong>nunca</strong> a contratendencia.
+              </li>
+              <li>
+                En 5M hay CHoCH pero no hubo barrido previo. Eso es ruido de
+                temporalidad menor, y en 5M abunda.
+              </li>
+              <li>
+                Hay noticia de alto impacto en la próxima hora. El 5M se vuelve
+                inoperable antes que cualquier otra temporalidad.
+              </li>
+              <li>
+                El SL ajustado queda dentro del rango de oscilación normal del
+                instrumento.
+              </li>
+              <li>
+                Te descubres bajando a 1M porque el 5M tampoco mostró nada. Cada
+                escalón que bajas buscando evidencia es una señal de que la
+                evidencia no está.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ============ SETUP D ============ -->
+        <section id="setup-d-detalle">
+          <div class="eyebrow">Setup D</div>
+          <h2>Ruptura y retest de nivel</h2>
+          <p>
+            La respuesta correcta al escenario "el precio se me fue". El trade
+            nunca es la ruptura — es el retest del nivel roto desde el otro
+            lado. Y la distinción crítica está en el paso 2: cierre de cuerpo o
+            solo mecha cambia por completo qué setup estás mirando.
+          </p>
+
+          <div class="fig">
+            <svg
+              viewBox="0 0 680 250"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+            >
+              <title>Anatomía del Setup D</title>
+              <line
+                x1="60"
+                y1="140"
+                x2="640"
+                y2="140"
+                stroke="#E8B54B"
+                stroke-width="1.5"
+              />
+              <text
+                x="60"
+                y="132"
+                font-size="11.5"
+                fill="#E8B54B"
+                font-family="sans-serif"
+              >
+                Liquidez horizontal (máximos iguales)
+              </text>
+              <circle cx="150" cy="140" r="3.5" fill="#E8B54B" />
+              <circle cx="230" cy="140" r="3.5" fill="#E8B54B" />
+
+              <path
+                d="M70 200 L120 150 L150 141 L190 175 L230 141 L265 190"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+
+              <line
+                x1="301"
+                y1="96"
+                x2="301"
+                y2="178"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <rect x="290" y="102" width="22" height="72" fill="#2EBD85" />
+              <line
+                x1="336"
+                y1="92"
+                x2="336"
+                y2="116"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <rect x="326" y="98" width="20" height="14" fill="#2EBD85" />
+
+              <path
+                d="M348 100 L385 137 L420 118 L470 70 L520 40"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <circle cx="385" cy="137" r="5.5" fill="#2EBD85" />
+
+              <circle
+                cx="268"
+                cy="128"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="268"
+                y="132"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                1
+              </text>
+              <line
+                x1="385"
+                y1="157"
+                x2="385"
+                y2="145"
+                stroke="#2EBD85"
+                stroke-width="1"
+                stroke-dasharray="3 3"
+              />
+              <circle
+                cx="385"
+                cy="168"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="385"
+                y="172"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                2
+              </text>
+              <text
+                x="430"
+                y="160"
+                font-size="11.5"
+                fill="#8CA0B4"
+                font-family="sans-serif"
+              >
+                El nivel roto pasa a ser soporte
+              </text>
+
+              <line
+                x1="540"
+                y1="178"
+                x2="576"
+                y2="178"
+                stroke="#F6465D"
+                stroke-width="1.4"
+              />
+              <text
+                x="580"
+                y="182"
+                font-size="11.5"
+                fill="#F6465D"
+                font-family="sans-serif"
+              >
+                SL
+              </text>
+            </svg>
+            <div class="figcap">
+              FIG 18.6 — ① ruptura con cierre de cuerpo por encima del nivel (no
+              solo mecha) · ② el trade es el retest del nivel desde arriba, con
+              rechazo y micro-CHoCH.
+            </div>
+          </div>
+
+          <h3>Paso a paso</h3>
+          <ol class="steps">
+            <li>
+              Identifica la liquidez horizontal: máximos o mínimos iguales,
+              techo o suelo de rango. Debe ser un nivel obvio, no uno que
+              tuviste que buscar.
+            </li>
+            <li>
+              Espera la ruptura <strong>con cierre de cuerpo</strong>. Si solo
+              la mecha atravesó el nivel, no fue ruptura: fue barrido, y el
+              setup correcto pasa a ser E.
+            </li>
+            <li>
+              Marca el nivel roto. A partir de aquí es soporte si rompió al
+              alza, resistencia si rompió a la baja.
+            </li>
+            <li>
+              Espera el retest desde el otro lado y aplica el núcleo de
+              confirmación completo: rechazo con cuerpo dominante + micro-CHoCH,
+              con al menos una evidencia adicional.
+            </li>
+            <li>
+              Entrada en el retest confirmado. SL bajo el nivel + buffer — no
+              justo en el nivel, que es exactamente donde va a haber ruido.
+            </li>
+          </ol>
+
+          <div class="card gold">
+            <h4 class="g">SL y TP — Setup D</h4>
+            <ul>
+              <li>
+                <strong>SL:</strong> por debajo del nivel roto más buffer.
+                <strong>Nunca en el nivel</strong>: es un precio que todo el
+                mercado está mirando, y por eso mismo es donde se concentra el
+                ruido.
+              </li>
+              <li>
+                <strong>Ajuste fino:</strong> si la vela de confirmación del
+                retest dejó mecha por debajo del nivel, ancla el SL detrás de
+                esa mecha en lugar del nivel plano.
+              </li>
+              <li>
+                <strong>TP1:</strong> la siguiente liquidez en la dirección de
+                la ruptura, medida en 1H.
+              </li>
+              <li>
+                <strong>Cuidado con el ratio:</strong> si el nivel que rompiste
+                <em>era</em> la primera liquidez, el TP1 real puede quedar mucho
+                más lejos de lo que parece. Verifica el R:R antes de asumir que
+                es bueno.
+              </li>
+            </ul>
+          </div>
+
+          <div class="card red">
+            <h4 class="r">Descartar de inmediato si…</h4>
+            <ul>
+              <li>
+                La ruptura fue solo con mecha. Es un sweep disfrazado de
+                ruptura, y confundirlos es el error del Caso 6.
+              </li>
+              <li>
+                El precio nunca retestea. Dejarlo pasar <em>es</em> la ejecución
+                correcta de este setup, no un fallo.
+              </li>
+              <li>
+                Durante el retest el precio atraviesa el nivel con cuerpo hacia
+                el lado contrario: la ruptura falló y ahora estarías operando
+                contra la evidencia más reciente.
+              </li>
+              <li>
+                Es el tercer o cuarto retest del mismo nivel. Cada visita lo
+                debilita; los niveles no se recargan.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ============ SETUP E ============ -->
+        <section id="setup-e-detalle">
+          <div class="eyebrow">Setup E</div>
+          <h2>Doble barrido e inversión a IFVG</h2>
+          <p>
+            El setup obligatorio cuando cuentas 2 o 3 banderas rojas. También el
+            más engañoso: su paso 3 consiste en <strong>no hacer nada</strong>
+            mientras el mercado ofrece la entrada de continuación que parece
+            correcta. La mayoría de las pérdidas documentadas en la Sección 16
+            son entradas tomadas en ese paso 3.
+          </p>
+
+          <div class="fig">
+            <svg
+              viewBox="0 0 680 300"
+              xmlns="http://www.w3.org/2000/svg"
+              role="img"
+            >
+              <title>Anatomía del Setup E</title>
+              <rect
+                x="140"
+                y="110"
+                width="260"
+                height="48"
+                rx="3"
+                fill="#F6465D"
+                opacity="0.10"
+              />
+              <rect
+                x="140"
+                y="110"
+                width="260"
+                height="48"
+                rx="3"
+                fill="none"
+                stroke="#F6465D"
+                opacity="0.35"
+              />
+              <rect
+                x="400"
+                y="110"
+                width="240"
+                height="48"
+                rx="3"
+                fill="#2EBD85"
+                opacity="0.10"
+              />
+              <rect
+                x="400"
+                y="110"
+                width="240"
+                height="48"
+                rx="3"
+                fill="none"
+                stroke="#2EBD85"
+                opacity="0.35"
+              />
+              <line
+                x1="140"
+                y1="134"
+                x2="400"
+                y2="134"
+                stroke="#E8B54B"
+                stroke-width="1"
+                stroke-dasharray="5 4"
+              />
+              <line
+                x1="140"
+                y1="225"
+                x2="640"
+                y2="225"
+                stroke="#8CA0B4"
+                stroke-width="1"
+                stroke-dasharray="3 3"
+              />
+
+              <text
+                x="46"
+                y="118"
+                font-size="11.5"
+                fill="#F6465D"
+                font-family="sans-serif"
+              >
+                FVG 1H
+              </text>
+              <text
+                x="46"
+                y="140"
+                font-size="11.5"
+                fill="#E8B54B"
+                font-family="sans-serif"
+              >
+                CE
+              </text>
+              <text
+                x="46"
+                y="229"
+                font-size="11.5"
+                fill="#8CA0B4"
+                font-family="sans-serif"
+              >
+                Mín. menor
+              </text>
+              <text
+                x="470"
+                y="104"
+                font-size="11.5"
+                fill="#2EBD85"
+                font-family="sans-serif"
+              >
+                Ahora IFVG — soporte
+              </text>
+
+              <path
+                d="M155 90 L190 128 L215 222 L245 165 L275 133 L305 236 L330 200 L360 130"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <line
+                x1="387"
+                y1="78"
+                x2="387"
+                y2="140"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <rect x="376" y="84" width="22" height="52" fill="#2EBD85" />
+              <path
+                d="M398 82 L430 128 L470 100 L520 55 L570 30"
+                fill="none"
+                stroke="#5AA7E8"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <circle cx="430" cy="128" r="5.5" fill="#2EBD85" />
+
+              <line
+                x1="276"
+                y1="167"
+                x2="276"
+                y2="142"
+                stroke="#F6465D"
+                stroke-width="1"
+                stroke-dasharray="3 3"
+              />
+              <circle
+                cx="276"
+                cy="178"
+                r="11"
+                fill="#0E141B"
+                stroke="#F6465D"
+                stroke-width="1.2"
+              />
+              <text
+                x="276"
+                y="182"
+                font-size="11"
+                font-weight="700"
+                fill="#F6465D"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                1
+              </text>
+              <circle
+                cx="305"
+                cy="255"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="305"
+                y="259"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                2
+              </text>
+              <circle
+                cx="352"
+                cy="96"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="352"
+                y="100"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                3
+              </text>
+              <line
+                x1="430"
+                y1="169"
+                x2="430"
+                y2="140"
+                stroke="#2EBD85"
+                stroke-width="1"
+                stroke-dasharray="3 3"
+              />
+              <circle
+                cx="430"
+                cy="180"
+                r="11"
+                fill="#0E141B"
+                stroke="#2EBD85"
+                stroke-width="1.2"
+              />
+              <text
+                x="430"
+                y="184"
+                font-size="11"
+                font-weight="700"
+                fill="#2EBD85"
+                text-anchor="middle"
+                font-family="sans-serif"
+              >
+                4
+              </text>
+
+              <line
+                x1="560"
+                y1="248"
+                x2="596"
+                y2="248"
+                stroke="#F6465D"
+                stroke-width="1.4"
+              />
+              <text
+                x="600"
+                y="252"
+                font-size="11.5"
+                fill="#F6465D"
+                font-family="sans-serif"
+              >
+                SL
+              </text>
+            </svg>
+            <div class="figcap">
+              FIG 18.7 — ① el retest que <em>no</em> se opera (marcado en rojo)
+              · ② barrido con mecha de la liquidez residual · ③ cierre de cuerpo
+              al otro lado: la zona se invierte · ④ entrada en el retest del
+              IFVG ya invertido.
+            </div>
+          </div>
+
+          <h3>Paso a paso</h3>
+          <ol class="steps">
+            <li>
+              Marca la zona en 1H y <strong>cuenta las banderas rojas</strong>.
+              Con 2 o 3, este es el único setup permitido y los demás quedan
+              cerrados.
+            </li>
+            <li>
+              Identifica la liquidez residual: el mínimo o máximo obvio justo
+              más allá de la zona. Ese es el destino real del precio, y saberlo
+              de antemano es lo que hace operable el setup.
+            </li>
+            <li>
+              <strong>Deja pasar el primer retest.</strong> No operes
+              continuación. Este paso no tiene acción — tiene abstención, y es
+              donde se decide el resultado.
+            </li>
+            <li>
+              Espera el barrido con mecha de esa liquidez residual que
+              identificaste en el paso 2.
+            </li>
+            <li>
+              Espera el <strong>cierre de cuerpo</strong> al otro lado de la
+              zona original. Eso es lo que invierte el FVG en IFVG. Sin ese
+              cierre, la inversión no ocurrió.
+            </li>
+            <li>
+              Entrada en el retest del IFVG ya invertido, con CHoCH interno
+              confirmado. SL detrás de la mecha del barrido.
+            </li>
+          </ol>
+
+          <div class="card gold">
+            <h4 class="g">SL y TP — Setup E</h4>
+            <ul>
+              <li>
+                <strong>SL:</strong> detrás de la mecha del
+                <strong>segundo</strong> barrido — el que tomó la liquidez
+                residual. No detrás del primer retest, que es el que dejaste
+                pasar.
+              </li>
+              <li>
+                <strong>Por qué es el más ancho y aun así el mejor:</strong> en
+                pips es el mayor de los cinco, pero es el más justificado: por
+                debajo acaba de barrerse la liquidez, así que queda poco que el
+                mercado quiera ir a cazar.
+              </li>
+              <li>
+                <strong>TP1:</strong> la liquidez del lado contrario. En E suele
+                estar lejos porque el precio viene de invertir la zona, lo que
+                da el mejor R:R estructural de los cinco.
+              </li>
+              <li>
+                <strong>Diagnóstico:</strong> si el R:R de un Setup E sale peor
+                que 1:1.5, sospecha de tu lectura antes que del mercado. Este es
+                el setup que <em>debería</em> dar el mejor ratio; si no lo da,
+                probablemente no era un E.
+              </li>
+            </ul>
+          </div>
+
+          <div class="card red">
+            <h4 class="r">Descartar de inmediato si…</h4>
+            <ul>
+              <li>
+                El precio barre la liquidez pero
+                <strong>no cierra con cuerpo</strong> al otro lado. La inversión
+                no se completó: sigue siendo escenario de continuación y tú ya
+                no puedes operarlo porque tienes 2–3 banderas.
+              </li>
+              <li>
+                El IFVG no se retestea y el precio se va. No perseguir, igual
+                que en B y D.
+              </li>
+              <li>
+                El cierre de cuerpo coincide con una noticia de alto impacto.
+                Aplica el protocolo: esperar la vela de 15M cerrada antes de
+                validar nada.
+              </li>
+              <li>
+                El barrido no alcanza la liquidez que habías identificado. Si
+                revirtió antes, tu lectura de dónde estaba la liquidez era
+                equivocada — reevalúa en vez de entrar.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ============ TABLA COMPARATIVA ============ -->
+        <section id="tabla-setups">
+          <div class="eyebrow">Referencia rápida</div>
+          <h2>Precondiciones lado a lado</h2>
+          <p>
+            Para consulta en vivo. Si un setup no cumple su fila completa, no es
+            ese setup — y probablemente no sea ninguno.
+          </p>
+
+          <table>
+            <tr>
+              <th>Setup</th>
+              <th>Sesgo 4H</th>
+              <th>Banderas 1H</th>
+              <th>Confirmación 15M</th>
+              <th>Tamaño</th>
+            </tr>
+            <tr>
+              <td>A · Libro</td>
+              <td class="ok">A favor</td>
+              <td>0–1</td>
+              <td>
+                Barrido + rechazo + volumen + CHoCH (los cuatro, en orden)
+              </td>
+              <td class="ok">Completo</td>
+            </tr>
+            <tr>
+              <td>B · Desplazamiento</td>
+              <td class="ok">A favor</td>
+              <td>0</td>
+              <td>Desplazamiento inequívoco + BOS con cuerpo + FVG nuevo</td>
+              <td class="ok">Completo</td>
+            </tr>
+            <tr>
+              <td>C · TF menor</td>
+              <td class="no">Nunca en contra</td>
+              <td>0–1</td>
+              <td>Barrido + CHoCH visibles en 5M</td>
+              <td class="mid">Reducido (½)</td>
+            </tr>
+            <tr>
+              <td>D · Ruptura + retest</td>
+              <td class="mid">Manda el nivel</td>
+              <td>0–1</td>
+              <td>Cierre de cuerpo + retest con rechazo y micro-CHoCH</td>
+              <td class="ok">Completo</td>
+            </tr>
+            <tr>
+              <td>E · Doble barrido</td>
+              <td class="mid">Cualquiera</td>
+              <td class="no">2–3</td>
+              <td>Barrido + cierre de cuerpo invirtiendo + CHoCH interno</td>
+              <td class="ok">Completo</td>
+            </tr>
+          </table>
+
+          <h3>Dónde se ancla el SL en cada setup</h3>
+          <p>
+            El SL siempre se define en la temporalidad de ejecución y siempre va
+            detrás del swing de confirmación — pero <em>cuál</em> es el swing de
+            confirmación cambia con el setup. Esa es toda la diferencia.
+          </p>
+          <table>
+            <tr>
+              <th>Setup</th>
+              <th>Ancla del SL</th>
+              <th>TF del SL</th>
+              <th>Ancho relativo</th>
+            </tr>
+            <tr>
+              <td>A · Libro</td>
+              <td>Mecha del barrido</td>
+              <td>15M</td>
+              <td class="ok">Medio</td>
+            </tr>
+            <tr>
+              <td>B · Desplazamiento</td>
+              <td>Origen de la vela de desplazamiento</td>
+              <td>15M</td>
+              <td class="mid">Ancho</td>
+            </tr>
+            <tr>
+              <td>C · TF menor</td>
+              <td>Mecha del barrido en 5M</td>
+              <td class="mid">5M</td>
+              <td class="ok">Muy ajustado</td>
+            </tr>
+            <tr>
+              <td>D · Ruptura + retest</td>
+              <td>Bajo el nivel roto + buffer</td>
+              <td>15M</td>
+              <td class="ok">Ajustado</td>
+            </tr>
+            <tr>
+              <td>E · Doble barrido</td>
+              <td>Mecha del segundo barrido</td>
+              <td>15M</td>
+              <td class="no">El más ancho</td>
+            </tr>
+          </table>
+          <p>
+            El TP se define en <strong>1H en los cinco casos</strong>, incluido
+            el Setup C. La temporalidad de entrada baja; la de objetivo no.
+          </p>
+
+          <div class="card gold">
+            <h4 class="g">Reglas de desempate</h4>
+            <ul>
+              <li>
+                <strong
+                  >Si dos setups parecen aplicar a la vez, gana el más
+                  restrictivo.</strong
+                >
+                En la práctica: si dudas entre continuación e inversión, la
+                respuesta es esperar la inversión.
+              </li>
+              <li>
+                <strong
+                  >Contra el sesgo de 4H sube un escalón de exigencia:</strong
+                >
+                A pasa a requerir R:R ≥ 1:2, B y C quedan prohibidos, D y E se
+                mantienen porque su evidencia no depende de la tendencia macro.
+              </li>
+              <li>
+                <strong
+                  >Si el 15M no encaja en ninguno de los cinco cuadros, no hay
+                  trade.</strong
+                >
+                La ausencia de setup es información, no una invitación a
+                inventar el sexto.
+              </li>
+              <li>
+                <strong
+                  >El conteo de banderas se escribe antes de bajar a
+                  15M.</strong
+                >
+                Un conteo hecho después de ver una vela bonita no es un conteo,
+                es una justificación.
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h4>Registro sugerido por trade</h4>
+            <p>
+              Para que el backtest paralelo de EURUSD, SP500 y XAUUSD pueda
+              comparar win rate por tipo de confirmación, cada entrada necesita
+              como mínimo: <span class="mono">setup (A–E)</span> ·
+              <span class="mono">sesgo 4H (a favor / en contra)</span> ·
+              <span class="mono">banderas contadas (0–3)</span> ·
+              <span class="mono">evidencia adicional usada</span> ·
+              <span class="mono">R:R planificado vs. obtenido</span>. Sin la
+              etiqueta de setup, los resultados agregados no dicen nada sobre
+              cuál de las cinco variantes te funciona.
+            </p>
+          </div>
+        </section>
+      </div>
+      <!-- fin tab-setups -->
+
       <footer>
         <p class="mono">
           ESTRATEGIA IFVG · EURUSD / XAUUSD / SP500 · 4H → 1H → 15M ·
           Metodología ICT + análisis técnico clásico.<br />
-          Documento de referencia personal de William · v3.2 (21-JUL-2026) ·
+          Documento de referencia personal de William · v3.5 (26-JUL-2026) ·
           Actualizar tras cada revisión de trades.
         </p>
       </footer>
