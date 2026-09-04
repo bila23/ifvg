@@ -347,6 +347,88 @@
           animation: none !important;
         }
       }
+      /* ---------- matriz de temporalidades ---------- */
+      .tf-matrix {
+        display: grid;
+        grid-template-columns: 150px 110px 1fr;
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 22px 0;
+        font-size: 14px;
+      }
+
+      .tf-matrix > div {
+        background: var(--panel);
+        padding: 11px 13px;
+      }
+
+      .tf-matrix .head {
+        background: var(--panel2);
+        color: var(--dim);
+        font-size: 12.5px;
+        font-weight: 600;
+      }
+
+      .tf {
+        color: var(--key);
+        font-weight: 700;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      .research {
+        margin: 20px 0;
+        padding: 15px 17px;
+        border-left: 2px solid var(--key);
+        background: var(--panel2);
+        color: var(--dim);
+        font-size: 14px;
+      }
+
+      .research b {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .step-list {
+        counter-reset: step;
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+        max-width: 72ch;
+      }
+
+      .step-list li {
+        counter-increment: step;
+        position: relative;
+        padding: 13px 14px 13px 48px;
+        margin-bottom: 1px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+      }
+
+      .step-list li::before {
+        content: counter(step);
+        position: absolute;
+        left: 15px;
+        top: 13px;
+        color: var(--key);
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .step-list strong {
+        color: var(--text);
+      }
+
+      @media (max-width: 600px) {
+        .tf-matrix {
+          grid-template-columns: 120px 85px 1fr;
+          font-size: 13px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -520,6 +602,112 @@
         </div>
       </section>
 
+      <!-- ============ 03B ============ -->
+      <section>
+        <h2><span class="idx">03B</span>Mapa de temporalidades</h2>
+
+        <p>
+          Para que los tres modelos puedan estudiarse de forma consistente,
+          conviene separar la función de cada temporalidad. El timeframe
+          superior no debe utilizarse para buscar la entrada; su función es
+          proporcionar contexto. Los timeframes inferiores sirven para observar
+          cómo se desarrolla el movimiento.
+        </p>
+
+        <div class="research">
+          <b>Importante.</b>
+          Esta distribución es una estructura de estudio y backtesting. El
+          material original no especifica de forma suficientemente precisa que
+          cada elemento deba aparecer obligatoriamente en estas temporalidades.
+          Por eso deben tratarse como hipótesis que después serán validadas con
+          datos.
+        </div>
+
+        <div class="tf-matrix">
+          <div class="head">Función</div>
+          <div class="head">TF</div>
+          <div class="head">Qué observar</div>
+
+          <div>Contexto macro</div>
+          <div class="tf">4H</div>
+          <div>
+            Dirección predominante, máximos/mínimos relevantes y zonas
+            importantes que puedan influir en el movimiento intradía.
+          </div>
+
+          <div>Contexto intradía</div>
+          <div class="tf">1H</div>
+          <div>
+            Estructura reciente, zonas de desequilibrio y relación del precio
+            con los niveles relevantes del contexto superior.
+          </div>
+
+          <div>Liquidez</div>
+          <div class="tf">15M</div>
+          <div>
+            Máximos y mínimos intradía susceptibles de ser tomados y estructura
+            previa a la apertura.
+          </div>
+
+          <div>Confirmación estructural</div>
+          <div class="tf">5M</div>
+          <div>
+            Desplazamiento, cambio de estructura y aparición de desequilibrios
+            después del movimiento de liquidez.
+          </div>
+
+          <div>Detalle del setup</div>
+          <div class="tf">1M</div>
+          <div>
+            Secuencia de velas, formación/refinamiento del FVG o IFVG y
+            comportamiento del precio alrededor de la zona.
+          </div>
+
+          <div>Resultado</div>
+          <div class="tf">Backtest</div>
+          <div>
+            Registrar posteriormente el resultado según reglas de salida
+            previamente definidas, sin modificar las reglas después de conocer
+            el resultado.
+          </div>
+        </div>
+
+        <h3>Regla de lectura</h3>
+
+        <ol class="step-list">
+          <li>
+            <strong>4H:</strong> primero se determina el contexto general. No se
+            busca todavía el setup.
+          </li>
+
+          <li>
+            <strong>1H:</strong> se identifican las zonas y estructura que
+            podrían ser relevantes durante la sesión.
+          </li>
+
+          <li>
+            <strong>15M:</strong> se estudian los máximos y mínimos que pueden
+            funcionar como referencias de liquidez.
+          </li>
+
+          <li>
+            <strong>5M:</strong> se observa cómo responde el mercado después del
+            evento de liquidez y si aparece desplazamiento.
+          </li>
+
+          <li>
+            <strong>1M:</strong> se utiliza únicamente para estudiar el detalle
+            del comportamiento alrededor del FVG/IFVG.
+          </li>
+        </ol>
+
+        <p class="small dim">
+          La idea fundamental es evitar mezclar funciones: un máximo de 1M no
+          debería recibir automáticamente la misma importancia que un máximo
+          claramente visible en 15M o 1H.
+        </p>
+      </section>
+
       <!-- ============ 04 ============ -->
       <section>
         <h2><span class="idx">04</span>Modelo 1 · Manipulación</h2>
@@ -536,6 +724,69 @@
           La reversión deja un desplazamiento con hueco. La entrada no se toma
           en el barrido: se toma cuando el precio vuelve a ese hueco.
         </p>
+        <h3>Mapa del setup por temporalidad</h3>
+
+        <div class="tf-matrix">
+          <div class="head">Etapa</div>
+          <div class="head">TF</div>
+          <div class="head">Qué estudiar</div>
+
+          <div>Contexto</div>
+          <div class="tf">4H</div>
+          <div>
+            Dirección general y niveles relevantes que puedan condicionar la
+            sesión.
+          </div>
+
+          <div>Zona</div>
+          <div class="tf">1H</div>
+          <div>
+            FVG y otras zonas relevantes alrededor de las cuales se encuentra el
+            precio antes de NY.
+          </div>
+
+          <div>Liquidez</div>
+          <div class="tf">15M</div>
+          <div>
+            Identificar el máximo/mínimo previo que será utilizado como
+            referencia para estudiar el sweep.
+          </div>
+
+          <div>Respuesta</div>
+          <div class="tf">5M</div>
+          <div>
+            Comprobar si después del sweep aparece desplazamiento y cambio
+            estructural.
+          </div>
+
+          <div>FVG</div>
+          <div class="tf">5M</div>
+          <div>
+            Registrar el FVG generado por el desplazamiento y conservar su
+            precio exacto para el backtest.
+          </div>
+
+          <div>Refinamiento</div>
+          <div class="tf">1M</div>
+          <div>
+            Estudiar cómo interactúa el precio con el FVG y registrar la
+            secuencia del retest.
+          </div>
+
+          <div>Invalidación</div>
+          <div class="tf">Backtest</div>
+          <div>
+            Definir previamente qué evento invalida la hipótesis y utilizar
+            exactamente la misma regla en todas las muestras.
+          </div>
+        </div>
+
+        <div class="research">
+          <b>Hipótesis para probar:</b>
+          ¿el sweep identificado en 15M y confirmado mediante desplazamiento en
+          5M produce una muestra más limpia que buscar directamente sweeps en
+          1M? Esta comparación debería hacerse por separado en el backtest.
+        </div>
 
         <figure>
           <div class="viewport"><div id="fig-m1"></div></div>
@@ -586,7 +837,59 @@
           contexto y confirmación, mientras la entrada se sigue afinando en 1
           minuto.
         </p>
+        <h3>Mapa del setup por temporalidad</h3>
 
+        <div class="tf-matrix">
+          <div class="head">Etapa</div>
+          <div class="head">TF</div>
+          <div class="head">Qué estudiar</div>
+
+          <div>Contexto macro</div>
+          <div class="tf">4H</div>
+          <div>Dirección general y niveles relevantes.</div>
+
+          <div>Contexto intradía</div>
+          <div class="tf">1H</div>
+          <div>
+            Estructura y zonas que permitan distinguir una continuación de una
+            posible reversión.
+          </div>
+
+          <div>Confirmación principal</div>
+          <div class="tf">5M</div>
+          <div>
+            Dirección del desplazamiento, estructura y FVG generado durante la
+            expansión.
+          </div>
+
+          <div>Zona</div>
+          <div class="tf">5M</div>
+          <div>
+            Registrar el FVG o área de interés que queda después de la
+            expansión.
+          </div>
+
+          <div>Detalle</div>
+          <div class="tf">1M</div>
+          <div>
+            Estudiar el retroceso hacia la zona y documentar exactamente qué
+            ocurrió antes y durante el retest.
+          </div>
+
+          <div>Resultado</div>
+          <div class="tf">Backtest</div>
+          <div>
+            Comparar continuación frente a reversión posterior al retroceso.
+          </div>
+        </div>
+
+        <div class="research">
+          <b>Punto crítico del Modelo 2:</b>
+          el backtest debe registrar también los casos donde parecía existir
+          continuación pero posteriormente apareció reversión. De lo contrario
+          solamente se estarían seleccionando retrospectivamente los ejemplos
+          que funcionaron.
+        </div>
         <figure>
           <div class="viewport"><div id="fig-m2"></div></div>
           <p class="scrollhint">Deslizá el gráfico horizontalmente</p>
@@ -626,6 +929,67 @@
           y cambia de polaridad: el soporte pasa a ser resistencia. Eso es un
           <b>Inversion Fair Value Gap</b>.
         </p>
+
+        <h3>Mapa del setup por temporalidad</h3>
+
+        <div class="tf-matrix">
+          <div class="head">Etapa</div>
+          <div class="head">TF</div>
+          <div class="head">Qué estudiar</div>
+
+          <div>Contexto</div>
+          <div class="tf">4H</div>
+          <div>Estructura general y zonas relevantes.</div>
+
+          <div>Contexto intradía</div>
+          <div class="tf">1H</div>
+          <div>Tendencia, estructura y desequilibrios relevantes.</div>
+
+          <div>Movimiento previo</div>
+          <div class="tf">15M</div>
+          <div>
+            Identificar la expansión previa y los niveles de liquidez
+            relacionados.
+          </div>
+
+          <div>FVG original</div>
+          <div class="tf">5M</div>
+          <div>
+            Registrar exactamente el FVG que posteriormente será evaluado para
+            una posible invalidación.
+          </div>
+
+          <div>Invalidación</div>
+          <div class="tf">5M</div>
+          <div>
+            Estudiar si el precio atraviesa la zona y qué condición de cierre se
+            utilizará en el backtest para considerar que el FVG quedó
+            invalidado.
+          </div>
+
+          <div>Refinamiento</div>
+          <div class="tf">1M</div>
+          <div>
+            Observar el comportamiento posterior alrededor de la zona ya
+            invalidada.
+          </div>
+
+          <div>Resultado</div>
+          <div class="tf">Backtest</div>
+          <div>
+            Registrar si la antigua zona mantiene posteriormente un
+            comportamiento consistente con la hipótesis de inversión de
+            polaridad.
+          </div>
+        </div>
+
+        <div class="research">
+          <b>Pregunta de investigación:</b>
+          ¿la confirmación de la invalidación debe venir del 5M o basta con el
+          comportamiento del 1M? Esta es una de las variables que conviene
+          comparar en muestras separadas, no decidirla después de ver el
+          resultado.
+        </div>
 
         <figure>
           <div class="viewport"><div id="fig-inv"></div></div>
