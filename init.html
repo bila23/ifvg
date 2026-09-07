@@ -68,6 +68,48 @@
         font-size: 17px;
         max-width: 62ch;
         margin: 0;
+      } /* reloj de sesiones */
+      .reloj {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 20px;
+        align-items: center;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 18px 22px;
+        margin: 24px 0 6px;
+      }
+
+      #rj-hora {
+        font-size: 40px;
+        font-weight: 660;
+        letter-spacing: -0.025em;
+        line-height: 1.02;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .reloj .sub {
+        color: var(--dim);
+        font-size: 13.5px;
+        margin-top: 3px;
+      }
+
+      #rj-sesion {
+        font-size: 17px;
+        font-weight: 620;
+        line-height: 1.4;
+      }
+
+      @media (max-width: 620px) {
+        .reloj {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+
+        #rj-hora {
+          font-size: 34px;
+        }
       }
 
       section {
@@ -443,6 +485,51 @@
           gatillo en 15M. Cada paso filtra. Si uno falla, no hay operación.
         </p>
       </header>
+
+      <!-- ===== reloj ===== -->
+      <section>
+        <h2 class="no">
+          <span class="idx">—</span>
+          Hora y sesión
+        </h2>
+        <p class="tag">
+          Todo en hora de El Salvador · el cambio de horario de Estados Unidos y
+          Europa se ajusta solo
+        </p>
+        <div class="reloj">
+          <div>
+            <div id="rj-hora">--:--:--</div>
+            <div class="sub" id="rj-fecha">—</div>
+          </div>
+          <div>
+            <div id="rj-sesion">—</div>
+            <div class="sub" id="rj-cuenta">—</div>
+          </div>
+        </div>
+        <figure>
+          <div class="viewport">
+            <div id="fig-sesiones"></div>
+          </div>
+          <p class="scrollhint">Deslizá horizontalmente</p>
+          <figcaption>
+            <b>Día completo en hora local.</b>
+            La franja marcada dentro de Nueva York es la ventana de apertura,
+            donde vive la mayoría de los setups. La línea vertical es el momento
+            actual.
+          </figcaption>
+        </figure>
+        <table class="tabla" id="tabla-sesiones">
+          <thead>
+            <tr>
+              <th>Sesión</th>
+              <th>Hora El Salvador</th>
+              <th>Hora local del mercado</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
 
       <!-- ===== mapa ===== -->
       <section>
@@ -2329,6 +2416,366 @@
           c.addEventListener("change", pintar);
         });
         pintar();
+      })();
+
+      /* ---------- reloj de sesiones · El Salvador = UTC−6 fijo ---------- */
+      (function () {
+        function nthSun(y, m, n) {
+          var d = new Date(Date.UTC(y, m, 1));
+          var add = (7 - d.getUTCDay()) % 7;
+          return new Date(Date.UTC(y, m, 1 + add + (n - 1) * 7));
+        }
+        function lastSun(y, m) {
+          var d = new Date(Date.UTC(y, m + 1, 0));
+          return new Date(Date.UTC(y, m, d.getUTCDate() - d.getUTCDay()));
+        }
+        function usDST(d) {
+          var y = d.getUTCFullYear();
+          var a = nthSun(y, 2, 2);
+          a.setUTCHours(7);
+          var b = nthSun(y, 10, 1);
+          b.setUTCHours(6);
+          return d >= a && d < b;
+        }
+        function euDST(d) {
+          var y = d.getUTCFullYear();
+          var a = lastSun(y, 2);
+          a.setUTCHours(1);
+          var b = lastSun(y, 9);
+          b.setUTCHours(1);
+          return d >= a && d < b;
+        }
+        function auDST(d) {
+          var y = d.getUTCFullYear();
+          var a = nthSun(y, 9, 1);
+          a.setUTCHours(16);
+          var b = nthSun(y, 3, 1);
+          b.setUTCHours(16);
+          return d >= a || d < b;
+        }
+        function hm(m) {
+          m = ((Math.floor(m) % 1440) + 1440) % 1440;
+          var h = Math.floor(m / 60),
+            mi = m % 60;
+          return (h < 10 ? "0" : "") + h + ":" + (mi < 10 ? "0" : "") + mi;
+        }
+        function dentro(m, a, b) {
+          return a < b ? m >= a && m < b : m >= a || m < b;
+        }
+        function faltan(m) {
+          m = ((Math.floor(m) % 1440) + 1440) % 1440;
+          var h = Math.floor(m / 60),
+            mi = m % 60;
+          return h > 0 ? h + " h " + mi + " min" : mi + " min";
+        }
+
+        function build(now) {
+          var ny = usDST(now) ? -4 : -5;
+          var ld = euDST(now) ? 1 : 0;
+          var sy = auDST(now) ? 11 : 10;
+          var tk = 9;
+          function sv(min, off) {
+            return (((min - off * 60 - 360) % 1440) + 1440) % 1440;
+          }
+          return {
+            ses: [
+              {
+                n: "Nueva York",
+                c: "#5aa9f0",
+                a: sv(570, ny),
+                b: sv(960, ny),
+                loc: "9:30 – 16:00 " + (ny === -4 ? "EDT" : "EST"),
+              },
+              {
+                n: "Londres",
+                c: "#2bb673",
+                a: sv(480, ld),
+                b: sv(990, ld),
+                loc: "8:00 – 16:30 " + (ld === 1 ? "BST" : "GMT"),
+              },
+              {
+                n: "Tokio",
+                c: "#e0a92b",
+                a: sv(540, tk),
+                b: sv(900, tk),
+                loc: "9:00 – 15:00 JST",
+              },
+              {
+                n: "Sídney",
+                c: "#8496a8",
+                a: sv(600, sy),
+                b: sv(960, sy),
+                loc: "10:00 – 16:00 " + (sy === 11 ? "AEDT" : "AEST"),
+              },
+            ],
+            kz: {
+              a: sv(570, ny),
+              b: sv(660, ny),
+            },
+            nyOff: ny,
+          };
+        }
+
+        var W = 760,
+          H = 225,
+          x0 = 90,
+          x1 = 712,
+          rowH = 20,
+          y0 = 48,
+          gap = 34;
+        function xm(m) {
+          return x0 + (m / 1440) * (x1 - x0);
+        }
+
+        function dibujar(d, ahora) {
+          var s = "";
+          for (var t = 0; t <= 24; t += 3) {
+            var x = xm(t * 60);
+            s +=
+              '<line x1="' +
+              x +
+              '" y1="40" x2="' +
+              x +
+              '" y2="' +
+              (y0 + 3 * gap + rowH + 6) +
+              '" stroke="#22303f" stroke-width="1" opacity=".7"/>';
+            s +=
+              '<text x="' +
+              x +
+              '" y="' +
+              (y0 + 3 * gap + rowH + 22) +
+              '" text-anchor="middle" class="lbl" fill="#8496a8">' +
+              (t === 24 ? "24" : t) +
+              "</text>";
+          }
+          d.ses.forEach(function (g, i) {
+            var y = y0 + i * gap;
+            s +=
+              '<text x="' +
+              (x0 - 10) +
+              '" y="' +
+              (y + 14) +
+              '" text-anchor="end" class="ttl" fill="' +
+              g.c +
+              '">' +
+              g.n +
+              "</text>";
+            var tramos =
+              g.a < g.b
+                ? [[g.a, g.b]]
+                : [
+                    [g.a, 1440],
+                    [0, g.b],
+                  ];
+            tramos.forEach(function (tr) {
+              var xa = xm(tr[0]),
+                xb = xm(tr[1]);
+              s +=
+                '<rect x="' +
+                xa +
+                '" y="' +
+                y +
+                '" width="' +
+                Math.max(2, xb - xa) +
+                '" height="' +
+                rowH +
+                '" rx="2" fill="' +
+                g.c +
+                '" opacity=".18"/>';
+              s +=
+                '<rect x="' +
+                xa +
+                '" y="' +
+                y +
+                '" width="' +
+                Math.max(2, xb - xa) +
+                '" height="' +
+                rowH +
+                '" rx="2" fill="none" stroke="' +
+                g.c +
+                '" stroke-width="1" opacity=".6"/>';
+            });
+            if (i === 0) {
+              var ka = xm(d.kz.a),
+                kb = xm(d.kz.b);
+              s +=
+                '<rect x="' +
+                ka +
+                '" y="' +
+                y +
+                '" width="' +
+                Math.max(3, kb - ka) +
+                '" height="' +
+                rowH +
+                '" fill="' +
+                g.c +
+                '" opacity=".55"/>';
+              s +=
+                '<text x="' +
+                (kb + 8) +
+                '" y="' +
+                (y + 14) +
+                '" class="lbl" fill="' +
+                g.c +
+                '">apertura</text>';
+            }
+          });
+          var xn = xm(ahora);
+          s +=
+            '<line x1="' +
+            xn +
+            '" y1="34" x2="' +
+            xn +
+            '" y2="' +
+            (y0 + 3 * gap + rowH + 6) +
+            '" stroke="#dce6f0" stroke-width="1.6"/>';
+          s +=
+            '<rect x="' +
+            (xn - 26) +
+            '" y="14" width="52" height="18" rx="3" fill="#dce6f0"/>';
+          s +=
+            '<text x="' +
+            xn +
+            '" y="27" text-anchor="middle" class="est" fill="#0b1017">' +
+            hm(ahora) +
+            "</text>";
+          document.getElementById("fig-sesiones").innerHTML =
+            '<svg viewBox="0 0 ' +
+            W +
+            " " +
+            H +
+            '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sesiones de mercado a lo largo del día en hora de El Salvador con la hora actual marcada">' +
+            s +
+            "</svg>";
+        }
+
+        var dias = [
+          "domingo",
+          "lunes",
+          "martes",
+          "miércoles",
+          "jueves",
+          "viernes",
+          "sábado",
+        ];
+        var meses = [
+          "enero",
+          "febrero",
+          "marzo",
+          "abril",
+          "mayo",
+          "junio",
+          "julio",
+          "agosto",
+          "septiembre",
+          "octubre",
+          "noviembre",
+          "diciembre",
+        ];
+
+        function tick() {
+          var now = new Date();
+          var d = build(now);
+          var svDate = new Date(now.getTime() - 6 * 3600 * 1000);
+          var ahora =
+            svDate.getUTCHours() * 60 +
+            svDate.getUTCMinutes() +
+            svDate.getUTCSeconds() / 60;
+
+          document.getElementById("rj-hora").textContent =
+            hm(ahora) +
+            ":" +
+            (svDate.getUTCSeconds() < 10 ? "0" : "") +
+            svDate.getUTCSeconds();
+          document.getElementById("rj-fecha").textContent =
+            dias[svDate.getUTCDay()] +
+            ", " +
+            svDate.getUTCDate() +
+            " de " +
+            meses[svDate.getUTCMonth()] +
+            " · El Salvador";
+
+          var activas = d.ses
+            .filter(function (g) {
+              return dentro(ahora, g.a, g.b);
+            })
+            .map(function (g) {
+              return g.n;
+            });
+          var enKZ = dentro(ahora, d.kz.a, d.kz.b);
+          var finde = svDate.getUTCDay() === 0 || svDate.getUTCDay() === 6;
+
+          var elS = document.getElementById("rj-sesion"),
+            elC = document.getElementById("rj-cuenta");
+          if (finde) {
+            elS.innerHTML =
+              '<span style="color:#8496a8">Mercado cerrado</span>';
+            elC.textContent =
+              "Fin de semana. Los futuros reabren el domingo por la tarde.";
+          } else if (enKZ) {
+            elS.innerHTML =
+              '<span style="color:#5aa9f0">Apertura de Nueva York</span>';
+            elC.textContent =
+              "La ventana termina en " + faltan(d.kz.b - ahora) + ".";
+          } else {
+            elS.textContent = activas.length
+              ? "Sesión activa: " + activas.join(" y ")
+              : "Entre sesiones";
+            var falta = d.kz.a - ahora;
+            elC.textContent =
+              "Faltan " +
+              faltan(falta) +
+              " para la apertura de Nueva York (" +
+              hm(d.kz.a) +
+              ").";
+          }
+
+          dibujar(d, ahora);
+
+          var tb = document.querySelector("#tabla-sesiones tbody");
+          tb.innerHTML =
+            d.ses
+              .map(function (g) {
+                var act = dentro(ahora, g.a, g.b);
+                var est = finde
+                  ? '<span class="dim">cerrado</span>'
+                  : act
+                    ? '<span style="color:' + g.c + '">abierta</span>'
+                    : '<span class="dim">cerrada</span>';
+                return (
+                  '<tr><td style="color:' +
+                  g.c +
+                  '">' +
+                  g.n +
+                  "</td><td>" +
+                  hm(g.a) +
+                  " – " +
+                  hm(g.b) +
+                  '</td><td class="dim">' +
+                  g.loc +
+                  "</td><td>" +
+                  est +
+                  "</td></tr>"
+                );
+              })
+              .join("") +
+            '<tr><td style="color:#5aa9f0">Apertura NY</td><td>' +
+            hm(d.kz.a) +
+            " – " +
+            hm(d.kz.b) +
+            '</td><td class="dim">9:30 – 11:00 ' +
+            (d.nyOff === -4 ? "EDT" : "EST") +
+            "</td><td>" +
+            (finde
+              ? '<span class="dim">cerrado</span>'
+              : enKZ
+                ? '<span style="color:#5aa9f0">en curso</span>'
+                : '<span class="dim">fuera de ventana</span>') +
+            "</td></tr>";
+        }
+
+        tick();
+        setInterval(tick, 1000);
       })();
     </script>
   </body>
