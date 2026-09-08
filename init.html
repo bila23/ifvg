@@ -529,6 +529,25 @@
           </thead>
           <tbody></tbody>
         </table>
+
+        <div class="tool">
+          <h4>Consultar una hora cualquiera</h4>
+          <p class="hint">
+            Poné una hora de El Salvador y te dice qué estaba abierto. La fecha
+            importa, porque el cambio de horario mueve todo una hora.
+          </p>
+          <div class="row">
+            <div class="field">
+              <label for="cs-hora">Hora en El Salvador</label>
+              <input id="cs-hora" type="time" step="60" />
+            </div>
+            <div class="field">
+              <label for="cs-fecha">Fecha</label>
+              <input id="cs-fecha" type="date" />
+            </div>
+          </div>
+          <div class="out" id="res-consulta"></div>
+        </div>
       </section>
 
       <!-- ===== mapa ===== -->
@@ -2773,6 +2792,148 @@
                 : '<span class="dim">fuera de ventana</span>') +
             "</td></tr>";
         }
+
+        /* --- consulta de una hora arbitraria --- */
+        function local(svMin, off) {
+          return (((svMin + 360 + off * 60) % 1440) + 1440) % 1440;
+        }
+
+        function consultar() {
+          var out = document.getElementById("res-consulta");
+          var hv = document.getElementById("cs-hora").value;
+          var fv = document.getElementById("cs-fecha").value;
+          if (!hv) {
+            out.innerHTML =
+              '<span class="dim">Elegí una hora para consultar.</span>';
+            return;
+          }
+          var p = hv.split(":"),
+            m = parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+          var base,
+            diaSem = null;
+          if (fv) {
+            var f = fv.split("-");
+            base = new Date(Date.UTC(+f[0], +f[1] - 1, +f[2], 12));
+            diaSem = base.getUTCDay();
+          } else {
+            base = new Date();
+          }
+          var d = build(base);
+          var activas = d.ses.filter(function (g) {
+            return dentro(m, g.a, g.b);
+          });
+          var enKZ = dentro(m, d.kz.a, d.kz.b);
+          var finde = diaSem === 0 || diaSem === 6;
+
+          var titulo, color;
+          if (finde) {
+            titulo = "Mercado cerrado";
+            color = "#8496a8";
+          } else if (enKZ) {
+            titulo = "Apertura de Nueva York";
+            color = "#5aa9f0";
+          } else if (activas.length) {
+            titulo = activas
+              .map(function (g) {
+                return g.n;
+              })
+              .join(" y ");
+            color = activas[0].c;
+          } else {
+            titulo = "Entre sesiones";
+            color = "#8496a8";
+          }
+
+          var html =
+            '<div class="big" style="color:' + color + '">' + titulo + "</div>";
+
+          if (finde) {
+            html +=
+              '<div class="note">Es ' +
+              (diaSem === 6 ? "sábado" : "domingo") +
+              ". Los futuros no cotizan.</div>";
+          } else {
+            html +=
+              '<div class="note">' +
+              (activas.length
+                ? "Abierto a esa hora: " +
+                  activas
+                    .map(function (g) {
+                      return g.n;
+                    })
+                    .join(" · ")
+                : "Ninguna de las cuatro plazas principales estaba abierta.") +
+              "</div>";
+
+            if (enKZ) {
+              html +=
+                '<div class="note" style="color:#5aa9f0;margin-top:8px">Dentro de la ventana de apertura (' +
+                hm(d.kz.a) +
+                " – " +
+                hm(d.kz.b) +
+                "). Es donde vive el setup.</div>";
+            } else {
+              var antes = (((d.kz.a - m) % 1440) + 1440) % 1440;
+              var desde = (((m - d.kz.b) % 1440) + 1440) % 1440;
+              html +=
+                antes <= desde
+                  ? '<div class="note" style="margin-top:8px">Faltaban ' +
+                    faltan(antes) +
+                    " para la apertura.</div>"
+                  : '<div class="note" style="margin-top:8px">Habían pasado ' +
+                    faltan(desde) +
+                    " desde el cierre de la ventana.</div>";
+            }
+          }
+
+          var eq = d.ses
+            .map(function (g) {
+              var off =
+                g.n === "Nueva York"
+                  ? d.nyOff
+                  : g.n === "Londres"
+                    ? euDST(base)
+                      ? 1
+                      : 0
+                    : g.n === "Tokio"
+                      ? 9
+                      : auDST(base)
+                        ? 11
+                        : 10;
+              return (
+                '<span style="color:' +
+                g.c +
+                '">' +
+                g.n +
+                "</span> " +
+                hm(local(m, off))
+              );
+            })
+            .join(" · ");
+          html +=
+            '<div class="note" style="margin-top:10px">Esa hora en cada plaza: ' +
+            eq +
+            "</div>";
+
+          out.innerHTML = html;
+        }
+
+        (function initConsulta() {
+          var ahoraSV = new Date(Date.now() - 6 * 3600 * 1000);
+          var hh = ahoraSV.getUTCHours(),
+            mm = ahoraSV.getUTCMinutes();
+          document.getElementById("cs-hora").value =
+            (hh < 10 ? "0" : "") + hh + ":" + (mm < 10 ? "0" : "") + mm;
+          document.getElementById("cs-fecha").value = ahoraSV
+            .toISOString()
+            .slice(0, 10);
+          ["cs-hora", "cs-fecha"].forEach(function (i) {
+            var el = document.getElementById(i);
+            el.addEventListener("input", consultar);
+            el.addEventListener("change", consultar);
+          });
+          consultar();
+        })();
 
         tick();
         setInterval(tick, 1000);
